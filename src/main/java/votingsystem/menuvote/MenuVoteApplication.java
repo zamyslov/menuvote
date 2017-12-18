@@ -2,11 +2,12 @@ package votingsystem.menuvote;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import votingsystem.menuvote.config.JpaConfig;
 
 @SpringBootApplication
-public class MenuvoteApplication {
+public class MenuVoteApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MenuvoteApplication.class, args);
+		SpringApplication.run(new Class<?>[] {MenuVoteApplication.class, JpaConfig.class}, args);
 	}
 }
