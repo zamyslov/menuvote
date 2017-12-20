@@ -58,9 +58,8 @@ CREATE TABLE votes
   id               INTEGER default global_seq.nextval primary key,
   user_id          INTEGER                 NOT NULL,
   menu_id          INTEGER                 NOT NULL,
-  vote_date        TIMESTAMP DEFAULT now() NOT NULL,
-  mark             INTEGER                 NOT NULL,
-  CONSTRAINT votes_idx UNIQUE (user_id, menu_id, vote_date),
+  vote_date        DATE DEFAULT now() NOT NULL,
+  CONSTRAINT votes_idx UNIQUE (user_id, vote_date),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE
 );

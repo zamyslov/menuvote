@@ -17,23 +17,11 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
-    @NotBlank
-    @Size(min = 2, max = 100)
-    @Column(name = "name", nullable = false)
-    protected String name;
 
     protected AbstractBaseEntity() {
     }
-    protected AbstractBaseEntity(Integer id, String name) {
+    protected AbstractBaseEntity(Integer id) {
         this.id = id;
-        this.name = name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public void setId(Integer id) {
@@ -52,7 +40,7 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
 
     @Override
     public String toString() {
-        return String.format("Entity %s (%s, '%s')", getClass().getName(), id, name);
+        return String.format("Entity %s (%s)", getClass().getName(), id);
     }
 
     @Override
