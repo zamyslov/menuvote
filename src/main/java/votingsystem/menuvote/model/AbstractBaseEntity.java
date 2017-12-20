@@ -5,8 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.data.domain.Persistable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -26,15 +24,11 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
     )
     @Id
     @GeneratedValue(generator = "global_seq")
-
-//    @Id
-//    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
-
 
     protected AbstractBaseEntity() {
     }
+
     protected AbstractBaseEntity(Integer id) {
         this.id = id;
     }
