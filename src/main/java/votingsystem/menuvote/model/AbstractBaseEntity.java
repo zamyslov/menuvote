@@ -1,6 +1,8 @@
 package votingsystem.menuvote.model;
 
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.springframework.data.domain.Persistable;
 
 import javax.validation.constraints.NotBlank;
@@ -10,11 +12,24 @@ import javax.persistence.*;
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public abstract class AbstractBaseEntity implements Persistable<Integer> {
-    public static final int START_SEQ = 100000;
+    public static final String START_SEQ = "100000";
 
+
+    @GenericGenerator(
+            name = "global_seq",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "global_seq"),
+                    @Parameter(name = "initial_value", value = START_SEQ),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @GeneratedValue(generator = "global_seq")
+
+//    @Id
+//    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
 

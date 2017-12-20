@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "dishes_unique_name_idx")})
+@Table(name = "dishes")
 public class Dish extends AbstractNamedEntity {
 
     @Column(name = "price", nullable = false)

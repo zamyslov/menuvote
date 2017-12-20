@@ -10,6 +10,11 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 public class Restaurant extends AbstractNamedEntity {
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "address", nullable = false)
     @NotBlank
     @Size(min = 5, max = 150)

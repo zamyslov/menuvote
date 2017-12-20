@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = "user_id, vote_date", name = "votes_idx")})
+@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","vote_date"}, name = "votes_idx")})
 public class Vote extends AbstractBaseEntity{
 
     @ManyToOne(fetch = FetchType.EAGER)

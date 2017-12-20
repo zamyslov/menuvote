@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = "restaurant_id, dish_id, menu_date", name = "menus_idx")})
+@Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "menu_date"}, name = "menus_idx")})
 public class Menu extends AbstractBaseEntity{
 
     @ManyToOne(fetch = FetchType.EAGER)
