@@ -13,26 +13,27 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import votingsystem.menuvote.MenuVoteApplication;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = Application.class)
+@EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class)
 public class JpaConfig implements TransactionManagementConfigurer {
 
-    @Value("${dataSource.driverClassName}")
+    @Value("${spring.datasource.driverClassName}")
     private String driver;
-    @Value("${dataSource.url}")
+    @Value("${spring.datasource.url}")
     private String url;
-    @Value("${dataSource.username}")
+    @Value("${spring.datasource.username}")
     private String username;
-    @Value("${dataSource.password}")
+    @Value("${spring.datasource.password}")
     private String password;
-    @Value("${hibernate.dialect}")
+    @Value("${spring.jpa.database-platform}")
     private String dialect;
-    @Value("${hibernate.hbm2ddl.auto}")
+    @Value("${spring.jpa.hibernate.ddl-auto}")
     private String hbm2ddlAuto;
 
 
@@ -51,7 +52,7 @@ public class JpaConfig implements TransactionManagementConfigurer {
     public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(configureDataSource());
-        entityManagerFactoryBean.setPackagesToScan("com.yourcompany");
+        entityManagerFactoryBean.setPackagesToScan("votingsystem.menuvote");
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();
@@ -64,6 +65,7 @@ public class JpaConfig implements TransactionManagementConfigurer {
 
     @Bean
     public PlatformTransactionManager annotationDrivenTransactionManager() {
+
         return new JpaTransactionManager();
     }
 
