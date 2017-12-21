@@ -28,7 +28,7 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public User get(int id) {
-        return crudRepository.findById(id).orElse(null);
+        return crudRepository.getById(id).orElse(null);
     }
 
     @Override

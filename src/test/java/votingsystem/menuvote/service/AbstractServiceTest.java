@@ -9,12 +9,19 @@ import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import votingsystem.menuvote.MenuVoteApplication;
+import votingsystem.menuvote.MenuVoteApplicationTests;
 import votingsystem.menuvote.config.JpaConfig;
 
 import javax.annotation.sql.DataSourceDefinition;
@@ -22,10 +29,9 @@ import javax.annotation.sql.DataSourceDefinition;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static votingsystem.menuvote.util.ValidationUtil.getRootCause;
 
-@ContextConfiguration(classes = {JpaConfig.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-@Sql(scripts = "classpath:db/data.sql", config = @SqlConfig(encoding = "UTF-8"))
+@SpringBootTest(classes = JpaConfig.class)
+@Sql(scripts = "classpath:data.sql", config = @SqlConfig(encoding = "UTF-8"))
 abstract public class AbstractServiceTest {
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;

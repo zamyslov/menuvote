@@ -3,8 +3,10 @@ package votingsystem.menuvote.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import javafx.application.Application;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -19,8 +21,9 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@ComponentScan(basePackages = {"votingsystem.menuvote"})
+@EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class, entityManagerFactoryRef = "configureEntityManagerFactory", transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class)
 public class JpaConfig implements TransactionManagementConfigurer {
 
     @Value("${spring.datasource.driverClassName}")
@@ -36,7 +39,6 @@ public class JpaConfig implements TransactionManagementConfigurer {
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String hbm2ddlAuto;
 
-
     @Bean
     public DataSource configureDataSource() {
         HikariConfig config = new HikariConfig();
@@ -48,7 +50,7 @@ public class JpaConfig implements TransactionManagementConfigurer {
         return new HikariDataSource(config);
     }
 
-    @Bean
+    @Bean(name = "configureEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(configureDataSource());
@@ -63,7 +65,7 @@ public class JpaConfig implements TransactionManagementConfigurer {
         return entityManagerFactoryBean;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager annotationDrivenTransactionManager() {
 
         return new JpaTransactionManager();

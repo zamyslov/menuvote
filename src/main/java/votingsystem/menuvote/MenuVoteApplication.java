@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import votingsystem.menuvote.config.JpaConfig;
 
-@SpringBootApplication(scanBasePackages = {"votingsystem.menuvote"})
+@SpringBootApplication
 public class MenuVoteApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(MenuVoteApplication.class, args);

@@ -1,18 +1,22 @@
 package votingsystem.menuvote.model;
 
 import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.validation.constraints.Size;
 
 public class AbstractNamedEntity extends AbstractBaseEntity{
-    @NotBlank
-    @Size(min = 2, max = 100)
     @Column(name = "name", nullable = false)
+    @Size(min = 2, max = 100)
+    @NotBlank
     protected String name;
 
     public AbstractNamedEntity(Integer id, @NotBlank @Size(min = 2, max = 100) String name) {
         super(id);
         this.name = name;
+    }
+
+    public AbstractNamedEntity() {
     }
 
     public String getName() {
