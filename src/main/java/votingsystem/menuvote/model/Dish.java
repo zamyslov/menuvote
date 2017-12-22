@@ -1,23 +1,29 @@
 package votingsystem.menuvote.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "dishes")
+@Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "dishes_unique_name_idx")})
 public class Dish extends AbstractNamedEntity {
 
     @Column(name = "price", nullable = false)
-    @NotBlank
+    @NotNull
     private Double price = 0.0;
 
     public Dish(Integer id, String name, Double price) {
         super(id, name);
         this.price = price;
+    }
+
+    public Dish(Dish u) {
+        this(u.getId(), u.getName(), u.getPrice());
+    }
+
+    public Dish() {
     }
 
     public Double getPrice() {

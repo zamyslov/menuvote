@@ -1,26 +1,22 @@
-package votingsystem.menuvote;
+package votingsystem.menuvote.service.impl;
 
-import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import votingsystem.menuvote.model.Role;
 import votingsystem.menuvote.model.User;
-import votingsystem.menuvote.service.AbstractServiceTest;
 import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static votingsystem.menuvote.service.UserTestData.*;
 
 public class UserServiceTest extends AbstractServiceTest {
 
+//    @Autowired
+//    private CacheManager cacheManager;
 
     @Autowired
     protected UserService service;

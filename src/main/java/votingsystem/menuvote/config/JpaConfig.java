@@ -2,12 +2,12 @@ package votingsystem.menuvote.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import javafx.application.Application;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,6 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import votingsystem.menuvote.MenuVoteApplication;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -70,5 +71,13 @@ public class JpaConfig implements TransactionManagementConfigurer {
 
         return new JpaTransactionManager();
     }
+
+//    @Bean(name = "CacheManager")
+//    public EhCacheManagerFactoryBean ehCacheCacheManager() {
+//        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+//        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+//        cmfb.setShared(true);
+//        return cmfb;
+//    }
 
 }

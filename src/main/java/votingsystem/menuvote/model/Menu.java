@@ -21,6 +21,9 @@ public class Menu extends AbstractBaseEntity{
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Dish> dishes;
 
+    public Menu() {
+    }
+
     public Restaurant getRestaurant() {
         return restaurant;
     }

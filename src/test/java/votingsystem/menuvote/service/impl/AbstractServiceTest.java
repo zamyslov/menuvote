@@ -1,4 +1,4 @@
-package votingsystem.menuvote.service;
+package votingsystem.menuvote.service.impl;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import votingsystem.menuvote.MenuVoteApplication;
 import votingsystem.menuvote.MenuVoteApplicationTests;
 import votingsystem.menuvote.config.JpaConfig;
+import votingsystem.menuvote.service.TimingRules;
 
 import javax.annotation.sql.DataSourceDefinition;
 
