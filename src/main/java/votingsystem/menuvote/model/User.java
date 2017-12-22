@@ -7,8 +7,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;

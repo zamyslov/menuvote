@@ -3,8 +3,10 @@ package votingsystem.menuvote.model;
 import javax.persistence.Column;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Size;
 
+@MappedSuperclass
 public class AbstractNamedEntity extends AbstractBaseEntity{
     @Column(name = "name", nullable = false)
     @Size(min = 2, max = 100)
