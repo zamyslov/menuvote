@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "menu_date"}, name = "menus_idx")})
-public class Menu extends AbstractBaseEntity{
+public class Menu extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @CollectionTable(name = "restaurants", joinColumns = @JoinColumn(name = "restaurant_id"))
@@ -18,7 +18,7 @@ public class Menu extends AbstractBaseEntity{
     @NotBlank
     private Date date;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Dish> dishes;
 
     public Menu() {
@@ -42,10 +42,6 @@ public class Menu extends AbstractBaseEntity{
 
     public Set<Dish> getDishes() {
         return dishes;
-    }
-
-    public void setDishes(Set<Dish> dishes) {
-        this.dishes = dishes;
     }
 
     @Override
