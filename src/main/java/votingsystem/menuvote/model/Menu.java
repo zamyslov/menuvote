@@ -19,6 +19,7 @@ public class Menu extends AbstractBaseEntity {
     private Date date;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @CollectionTable(name = "dishes", joinColumns = @JoinColumn(name = "dish_id"))
     private Set<Dish> dishes;
 
     public Menu() {
