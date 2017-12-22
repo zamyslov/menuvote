@@ -31,7 +31,7 @@ public class UserServiceTest extends AbstractServiceTest {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", Role.ROLE_USER);
         User created = service.create(newUser);
         newUser.setId(created.getId());
-        assertMatch(service.getAll(), ADMIN, newUser, USER);
+        assertMatch(service.getAll(), ADMIN, newUser, USER, USER1, USER2);
     }
 
     @Test(expected = DataAccessException.class)
@@ -78,7 +78,7 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void getAll() throws Exception {
         List<User> all = service.getAll();
-        assertMatch(all, ADMIN, USER);
+        assertMatch(all, ADMIN, USER, USER1, USER2);
     }
 
     @Test

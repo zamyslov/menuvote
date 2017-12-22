@@ -55,6 +55,11 @@ public class User extends AbstractNamedEntity {
     @BatchSize(size = 200)
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderBy("date DESC")
+    private List<Vote> votes;
+
+
     public User() {
     }
 
@@ -113,6 +118,10 @@ public class User extends AbstractNamedEntity {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? Collections.emptySet() : EnumSet.copyOf(roles);
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
     }
 
     @Override

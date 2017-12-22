@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static votingsystem.menuvote.model.AbstractBaseEntity.START_SEQ;
 
 public class DishTestData {
-    public static final int DISH1_ID = Integer.valueOf(START_SEQ) + 4;
+    public static final int DISH1_ID = Integer.valueOf(START_SEQ) + 6;
     public static final int DISH2_ID = DISH1_ID + 1;
     public static final int DISH3_ID = DISH2_ID + 1;
 
