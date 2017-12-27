@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Size;
 
 @MappedSuperclass
-public class AbstractNamedEntity extends AbstractBaseEntity{
+public abstract class AbstractNamedEntity extends AbstractBaseEntity{
     @Column(name = "name", nullable = false)
     @Size(min = 2, max = 100)
     @NotBlank
