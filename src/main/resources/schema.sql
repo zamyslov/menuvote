@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS restaurants;
 DROP TABLE IF EXISTS dishes;
 DROP TABLE IF EXISTS menus;
+DROP TABLE IF EXISTS menus_dishes;
 DROP TABLE IF EXISTS votes;
 DROP SEQUENCE IF EXISTS global_seq;
 
@@ -39,7 +40,6 @@ CREATE TABLE dishes
 (
   id               INTEGER default global_seq.nextval primary key,
   name             VARCHAR                 NOT NULL,
-  price            DOUBLE                  NOT NULL,
 );
 CREATE UNIQUE INDEX dishes_unique_name_idx ON dishes (name);
 
@@ -47,21 +47,30 @@ CREATE TABLE menus
 (
   id               INTEGER default global_seq.nextval primary key,
   restaurant_id    INTEGER                 NOT NULL,
-  dish_id          INTEGER                 NOT NULL,
-  menu_date        DATE                    NOT NULL,
---   CONSTRAINT menus_idx UNIQUE (restaurant_id, dish_id, menu_date),
+  date             DATE                    NOT NULL,
+  --   CONSTRAINT menus_idx UNIQUE (restaurant_id, dish_id, menu_date),
   FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
+);
+CREATE UNIQUE INDEX menus_idx ON menus (restaurant_id, date);
+
+CREATE TABLE menus_dishes
+(
+  id               INTEGER default global_seq.nextval primary key,
+  menu_id          INTEGER                 NOT NULL,
+  dish_id          INTEGER                 NOT NULL,
+  price            DOUBLE                  NOT NULL,
+--   CONSTRAINT menus_idx UNIQUE (restaurant_id, dish_id, menu_date),
+  FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE,
   FOREIGN KEY (dish_id) REFERENCES dishes (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX menus_idx ON menus (restaurant_id, dish_id, menu_date);
+CREATE UNIQUE INDEX menus_dishes_idx ON menus_dishes (menu_id, dish_id);
 
 CREATE TABLE votes
 (
   id               INTEGER default global_seq.nextval primary key,
   user_id          INTEGER                 NOT NULL,
   menu_id          INTEGER                 NOT NULL,
-  vote_date        DATE DEFAULT now() NOT NULL,
-  CONSTRAINT votes_idx UNIQUE (user_id, vote_date),
+  CONSTRAINT votes_idx UNIQUE (user_id, menu_id),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE
 );

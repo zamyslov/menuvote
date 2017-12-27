@@ -7,20 +7,24 @@ import java.sql.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "menu_date"}, name = "menus_idx")})
+@Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "date"}, name = "menus_idx")})
 public class Menu extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @CollectionTable(name = "restaurants", joinColumns = @JoinColumn(name = "restaurant_id"))
+    @CollectionTable(name = "restaurants", joinColumns = @JoinColumn(name = "id"))
     private Restaurant restaurant;
 
-    @Column(name = "menu_date")
+    @Column(name = "date")
     @NotBlank
     private Date date;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @CollectionTable(name = "dishes", joinColumns = @JoinColumn(name = "dish_id"))
-    private Set<Dish> dishes;
+    @CollectionTable(name = "menus_dishes", joinColumns = @JoinColumn(name = "menu_id"))
+    private Set<MenuDishes> menuDishes;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @CollectionTable(name = "votes", joinColumns = @JoinColumn(name = "menu_id"))
+    private Set<Vote> votes;
 
     public Menu() {
     }
@@ -41,8 +45,20 @@ public class Menu extends AbstractBaseEntity {
         this.date = date;
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
+    public Set<MenuDishes> getMenuDishes() {
+        return menuDishes;
+    }
+
+    public void setMenuDishes(Set<MenuDishes> menuDishes) {
+        this.menuDishes = menuDishes;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
     }
 
     @Override
@@ -50,7 +66,8 @@ public class Menu extends AbstractBaseEntity {
         return "Menu{" +
                 "restaurant=" + restaurant +
                 ", date=" + date +
-                ", dishes=" + dishes +
+                ", dishes=" + menuDishes +
+                ", votes=" + votes +
                 ", id=" + id +
                 '}';
     }

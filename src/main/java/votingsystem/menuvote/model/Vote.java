@@ -17,15 +17,10 @@ public class Vote extends AbstractBaseEntity{
     @CollectionTable(name = "menus", joinColumns = @JoinColumn(name = "menu_id"))
     private Menu menu;
 
-    @Column(name = "vote_date")
-    @NotBlank
-    private Date date;
-
-    public Vote(Integer id, User user, Menu menu, Date date) {
+    public Vote(Integer id, User user, Menu menu) {
         super(id);
         this.user = user;
         this.menu = menu;
-        this.date = date;
     }
 
     public Vote() {
@@ -47,20 +42,11 @@ public class Vote extends AbstractBaseEntity{
         this.menu = menu;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     @Override
     public String toString() {
         return "Vote{" +
                 "user=" + user +
                 ", menu=" + menu +
-                ", date=" + date +
                 ", id=" + id +
                 '}';
     }
