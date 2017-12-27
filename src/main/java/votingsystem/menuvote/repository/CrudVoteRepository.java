@@ -6,26 +6,23 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import votingsystem.menuvote.model.Menu;
-import votingsystem.menuvote.model.MenuDishes;
+import votingsystem.menuvote.model.User;
+import votingsystem.menuvote.model.Vote;
 
 import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface CrudMenuDishesRepository extends JpaRepository<MenuDishes, Integer> {
+public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM MenuDishes u WHERE u.id=:id")
+    @Query("DELETE FROM Vote u WHERE u.id=:id")
     int delete(@Param("id") int id);
 
     @Override
     @Transactional
-    MenuDishes save(MenuDishes menu);
+    Vote save(Vote vote);
 
-    Optional<MenuDishes> getById(Integer id);
-
-    @Override
-    List<MenuDishes> findAll(Sort sort);
+    Optional<Vote> getById(Integer id);
 
 }

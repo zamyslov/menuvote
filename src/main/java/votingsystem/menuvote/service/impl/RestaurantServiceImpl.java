@@ -1,4 +1,4 @@
-package votingsystem.menuvote.service;
+package votingsystem.menuvote.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import votingsystem.menuvote.model.Restaurant;
 import votingsystem.menuvote.repository.RestaurantRepository;
+import votingsystem.menuvote.service.RestaurantService;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
 import java.util.List;

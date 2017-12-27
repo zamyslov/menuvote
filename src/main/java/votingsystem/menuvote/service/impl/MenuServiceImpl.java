@@ -1,4 +1,4 @@
-package votingsystem.menuvote.service;
+package votingsystem.menuvote.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -6,7 +6,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import votingsystem.menuvote.model.Dish;
+import votingsystem.menuvote.model.Menu;
 import votingsystem.menuvote.repository.DishRepository;
+import votingsystem.menuvote.repository.MenuRepository;
+import votingsystem.menuvote.service.MenuService;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
 import java.util.List;
@@ -14,44 +17,44 @@ import java.util.List;
 import static votingsystem.menuvote.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-public class DishServiceImpl implements DishService {
+public class MenuServiceImpl implements MenuService {
 
-    private final DishRepository repository;
+    private final MenuRepository repository;
 
     @Autowired
-    public DishServiceImpl(DishRepository repository) {
+    public MenuServiceImpl(MenuRepository repository) {
         this.repository = repository;
     }
 
-    @CacheEvict(value = "dishes", allEntries = true)
+    @CacheEvict(value = "menus", allEntries = true)
     @Override
-    public Dish create(Dish dish) {
-        Assert.notNull(dish, "dish must not be null");
-        return repository.save(dish);
+    public Menu create(Menu menu) {
+        Assert.notNull(menu, "menu must not be null");
+        return repository.save(menu);
     }
 
-    @CacheEvict(value = "dishes", allEntries = true)
+    @CacheEvict(value = "menus", allEntries = true)
     @Override
     public void delete(int id) throws NotFoundException {
         checkNotFoundWithId(repository.delete(id), id);
     }
 
     @Override
-    public Dish get(int id) throws NotFoundException {
+    public Menu get(int id) throws NotFoundException {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    @Cacheable("dishes")
+    @Cacheable("menus")
     @Override
-    public List<Dish> getAll() {
+    public List<Menu> getAll() {
         return repository.getAll();
     }
 
-    @CacheEvict(value = "dishes", allEntries = true)
+    @CacheEvict(value = "menus", allEntries = true)
     @Override
-    public void update(Dish dish) {
-        Assert.notNull(dish, "dish must not be null");
-        checkNotFoundWithId(repository.save(dish), dish.getId());
+    public void update(Menu menu) {
+        Assert.notNull(menu, "menu must not be null");
+        checkNotFoundWithId(repository.save(menu), menu.getId());
     }
 
 }
