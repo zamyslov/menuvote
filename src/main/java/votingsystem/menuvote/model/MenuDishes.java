@@ -3,30 +3,36 @@ package votingsystem.menuvote.model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
+@Embeddable
 @Table(name = "menus_dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id, dish_id"}, name = "menus_dishes_idx")})
-public class MenuDishes extends AbstractBaseEntity {
-    @ManyToOne(fetch = FetchType.EAGER)
-    @CollectionTable(name = "menus", joinColumns = @JoinColumn(name = "menus_id"))
+public class MenuDishes extends MenuDishesId {
+
+    @EmbeddedId
+    private MenuDishesId id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("menu_id")
     private Menu menu;
 
     @Column(name = "price")
     @NotBlank
     private Double price;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @CollectionTable(name = "dishes", joinColumns = @JoinColumn(name = "id"))
-    private Set<Dish> dishes;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("dish_id")
+    private Dish dish;
 
     public MenuDishes() {
     }
 
-    public MenuDishes(Menu menu, Double price, Set<Dish> dishes) {
+    public MenuDishes(Menu menu, Double price, Dish dish) {
         this.menu = menu;
         this.price = price;
-        setDishes(dishes);
+        this.dish = dish;
+        this.id = new MenuDishesId(menu.getId(), dish.getId());
     }
 
     public Menu getMenu() {
@@ -45,12 +51,12 @@ public class MenuDishes extends AbstractBaseEntity {
         this.price = price;
     }
 
-    public Set<Dish> getDishes() {
-        return dishes;
+    public Dish getDish() {
+        return dish;
     }
 
-    public void setDishes(Set<Dish> dishes) {
-        this.dishes = dishes;
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 
     @Override
@@ -58,8 +64,27 @@ public class MenuDishes extends AbstractBaseEntity {
         return "MenuDishes{" +
                 "menu=" + menu +
                 ", price=" + price +
-                ", dishes=" + dishes +
+                ", dishes=" + dish +
                 ", id=" + id +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        MenuDishes that = (MenuDishes) o;
+        return Objects.equals(menu, that.menu) &&
+                Objects.equals(dish, that.dish);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(menu, dish);
+    }
+
+
 }

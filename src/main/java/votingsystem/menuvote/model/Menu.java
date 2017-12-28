@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,11 +19,15 @@ public class Menu extends AbstractBaseEntity {
     @NotBlank
     private Date date;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @CollectionTable(name = "menus_dishes", joinColumns = @JoinColumn(name = "menu_id"))
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
     private Set<MenuDishes> menuDishes;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @CollectionTable(name = "votes", joinColumns = @JoinColumn(name = "menu_id"))
     private Set<Vote> votes;
 
@@ -59,6 +64,23 @@ public class Menu extends AbstractBaseEntity {
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Menu that = (Menu) o;
+        return Objects.equals(date, that.date) &&
+                Objects.equals(restaurant, that.restaurant);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), date, restaurant);
     }
 
     @Override
