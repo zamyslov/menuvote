@@ -1,10 +1,10 @@
-package votingsystem.menuvote.repository.impl;
+package votingsystem.menuvote.repository.datajpa.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import votingsystem.menuvote.model.User;
-import votingsystem.menuvote.repository.CrudUserRepository;
+import votingsystem.menuvote.repository.datajpa.CrudUserRepository;
 import votingsystem.menuvote.repository.UserRepository;
 
 import java.util.List;

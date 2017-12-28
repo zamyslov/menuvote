@@ -1,9 +1,9 @@
-package votingsystem.menuvote.repository.impl;
+package votingsystem.menuvote.repository.datajpa.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import votingsystem.menuvote.model.Vote;
-import votingsystem.menuvote.repository.CrudVoteRepository;
+import votingsystem.menuvote.repository.datajpa.CrudVoteRepository;
 import votingsystem.menuvote.repository.VoteRepository;
 
 @Repository

@@ -1,13 +1,11 @@
 package votingsystem.menuvote.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Objects;
 
 @Entity
-@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","vote_date"}, name = "votes_idx")})
-public class Vote extends AbstractBaseEntity{
+@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "vote_date"}, name = "votes_idx")})
+public class Vote extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "user_id"))
@@ -40,6 +38,17 @@ public class Vote extends AbstractBaseEntity{
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Vote that = (Vote) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override

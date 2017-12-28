@@ -1,9 +1,9 @@
-package votingsystem.menuvote.repository.impl;
+package votingsystem.menuvote.repository.datajpa.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import votingsystem.menuvote.model.Restaurant;
-import votingsystem.menuvote.repository.CrudRestaurantRepository;
+import votingsystem.menuvote.repository.datajpa.CrudRestaurantRepository;
 import votingsystem.menuvote.repository.RestaurantRepository;
 
 import java.util.List;
