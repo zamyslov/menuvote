@@ -4,6 +4,7 @@ package votingsystem.menuvote.service;
 import votingsystem.menuvote.model.Menu;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MenuService {
@@ -16,6 +17,9 @@ public interface MenuService {
 
     void update(Menu menu);
 
-    List<Menu> getAll();
+    List<Menu> getBetween(LocalDate startDate, LocalDate endDate);
+
+    List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate);
+
 
 }

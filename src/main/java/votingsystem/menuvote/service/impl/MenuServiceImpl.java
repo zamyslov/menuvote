@@ -12,6 +12,7 @@ import votingsystem.menuvote.repository.MenuRepository;
 import votingsystem.menuvote.service.MenuService;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static votingsystem.menuvote.util.ValidationUtil.checkNotFoundWithId;
@@ -44,12 +45,6 @@ public class MenuServiceImpl implements MenuService {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    @Cacheable("menus")
-    @Override
-    public List<Menu> getAll() {
-        return repository.getAll();
-    }
-
     @CacheEvict(value = "menus", allEntries = true)
     @Override
     public void update(Menu menu) {
@@ -57,4 +52,17 @@ public class MenuServiceImpl implements MenuService {
         checkNotFoundWithId(repository.save(menu), menu.getId());
     }
 
+    @Override
+    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
+        Assert.notNull(startDate, "start date must not be null");
+        Assert.notNull(endDate, "end date must not be null");
+        return repository.getBetween(startDate, endDate);
+    }
+
+    @Override
+    public List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate) {
+        Assert.notNull(startDate, "start date must not be null");
+        Assert.notNull(endDate, "end date must not be null");
+        return repository.getBetweenWithVotes(startDate, endDate);
+    }
 }

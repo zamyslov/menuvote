@@ -42,13 +42,13 @@ public class MenuDishesServiceImpl implements MenuDishesService {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    @Cacheable("menus")
+    @Cacheable("menus_dishes")
     @Override
     public List<MenuDishes> getAll() {
         return repository.getAll();
     }
 
-    @CacheEvict(value = "menus", allEntries = true)
+    @CacheEvict(value = "menus_dishes", allEntries = true)
     @Override
     public void update(MenuDishes menuDishes) {
         Assert.notNull(menuDishes, "menu dishes must not be null");
