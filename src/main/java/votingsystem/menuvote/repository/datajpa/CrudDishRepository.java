@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM Dish u WHERE u.id=:id")
+    @Query("DELETE FROM Dish d WHERE d.id=:id")
     int delete(@Param("id") int id);
 
     @Override

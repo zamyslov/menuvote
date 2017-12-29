@@ -25,10 +25,6 @@ import java.util.*;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends AbstractNamedEntity {
 
-    public static final String DELETE = "User.delete";
-    public static final String BY_EMAIL = "User.getByEmail";
-    public static final String ALL_SORTED = "User.getAllSorted";
-
     @Column(name = "email", nullable = false, unique = true)
     @NotBlank
     @Email
@@ -56,7 +52,6 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("date DESC")
     private List<Vote> votes;
 
 

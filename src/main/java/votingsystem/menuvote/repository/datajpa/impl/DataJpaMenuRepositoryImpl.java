@@ -6,6 +6,7 @@ import votingsystem.menuvote.model.Menu;
 import votingsystem.menuvote.repository.datajpa.CrudMenuRepository;
 import votingsystem.menuvote.repository.MenuRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -31,7 +32,12 @@ public class DataJpaMenuRepositoryImpl implements MenuRepository {
     }
 
     @Override
-    public List<Menu> getAll() {
-        return crudRepository.findAll();
+    public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
+        return crudRepository.getBetween(startDate, endDate);
+    }
+
+    @Override
+    public List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate) {
+        return crudRepository.getBetween(startDate, endDate);
     }
 }
