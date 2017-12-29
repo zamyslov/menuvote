@@ -6,6 +6,8 @@ import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.repository.datajpa.CrudVoteRepository;
 import votingsystem.menuvote.repository.VoteRepository;
 
+import java.time.LocalDate;
+
 @Repository
 public class DataJpaVoteRepositoryImpl implements VoteRepository {
 
@@ -18,13 +20,8 @@ public class DataJpaVoteRepositoryImpl implements VoteRepository {
     }
 
     @Override
-    public boolean delete(int id) {
-        return crudRepository.delete(id) != 0;
-    }
-
-    @Override
-    public Vote get(int id) {
-        return crudRepository.getById(id).orElse(null);
+    public boolean delete(LocalDate date, int user_id) {
+        return crudRepository.delete(date, user_id) != 0;
     }
 
 }
