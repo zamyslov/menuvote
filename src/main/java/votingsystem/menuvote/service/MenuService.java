@@ -17,9 +17,16 @@ public interface MenuService {
 
     void update(Menu menu);
 
+    List<Menu> getbyDate(LocalDate date) throws NotFoundException;
+
     List<Menu> getBetween(LocalDate startDate, LocalDate endDate);
 
     List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate);
+
+    void deleteMenuDish(int menu_id, int dish_id);
+
+    void addMenuDish(int menu_id, int dish_id, double price);
+
 
 
 }

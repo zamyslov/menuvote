@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,18 +21,24 @@ public class Menu extends AbstractBaseEntity {
     private Date date;
 
     @OneToMany(
-            mappedBy = "post",
+            mappedBy = "menu",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<MenuDishes> menuDishes;
+    private Set<MenuDishes> menuDishes = Collections.emptySet();
 
     @OneToMany(fetch = FetchType.LAZY)
     @CollectionTable(name = "votes", joinColumns = @JoinColumn(name = "menu_id"))
     private Set<Vote> votes;
 
     public Menu() {
+    }
+
+    public Menu(Integer id, Restaurant restaurant, Date date) {
+        super(id);
+        this.restaurant = restaurant;
+        this.date = date;
     }
 
     public Restaurant getRestaurant() {
