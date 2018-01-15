@@ -1,8 +1,9 @@
 package votingsystem.menuvote.service;
 
 
-import votingsystem.menuvote.model.Restaurant;
 import votingsystem.menuvote.util.exception.NotFoundException;
+import votingsystem.menuvote.model.Restaurant;
+
 
 import java.util.List;
 

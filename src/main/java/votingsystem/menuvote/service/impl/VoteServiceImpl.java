@@ -11,9 +11,12 @@ import votingsystem.menuvote.repository.UserRepository;
 import votingsystem.menuvote.repository.VoteRepository;
 import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.service.VoteService;
+import votingsystem.menuvote.util.exception.ClosedPeriodException;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static votingsystem.menuvote.util.ValidationUtil.checkNotFound;
@@ -40,5 +43,17 @@ public class VoteServiceImpl implements VoteService {
         repository.delete(date, user_id);
     }
 
+    @Override
+    public void update(Vote vote, int user_id) throws NotFoundException {
+        update(vote, user_id, LocalDate.now());
+    }
 
+    @Override
+    public void update(Vote vote, int user_id, LocalDate date) throws NotFoundException {
+        if (LocalDateTime.now().isAfter(LocalDateTime.of(date, LocalTime.of(11,00)))) {
+            throw new ClosedPeriodException("This period is closed for votes");
+        }else {
+            repository.save(vote);
+        }
+    }
 }
