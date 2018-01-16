@@ -27,7 +27,7 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test
     public void create() throws Exception {
-        Dish newDish = new Dish(null, "Cake", 2.0);
+        Dish newDish = new Dish(null, "Cake");
         Dish created = service.create(newDish);
         newDish.setId(created.getId());
         assertMatch(service.getAll(), DISH1, DISH2, DISH3, newDish);
@@ -35,7 +35,7 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test(expected = DataAccessException.class)
     public void duplicateDishCreate() throws Exception {
-        service.create(new Dish(null, "Meat", 20.4));
+        service.create(new Dish(null, "Meat"));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class DishServiceTest extends AbstractServiceTest {
     @Test
     public void update() throws Exception {
         Dish updated = new Dish(DISH3);
-        updated.setPrice(100.0);
+        updated.setName("new Dish");
         service.update(updated);
         assertMatch(service.get(DISH3_ID), updated);
     }
@@ -76,7 +76,6 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test
     public void testValidation() throws Exception {
-        validateRootCause(() -> service.create(new Dish(null, "  ", 20.5)), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Dish(null, "name", null)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Dish(null, "  ")), ConstraintViolationException.class);
     }
 }

@@ -28,11 +28,19 @@ public class MenuDishes extends MenuDishesId {
     public MenuDishes() {
     }
 
-    public MenuDishes(Menu menu, Double price, Dish dish) {
+    public MenuDishes(Menu menu, Dish dish, Double price) {
         this.menu = menu;
         this.price = price;
         this.dish = dish;
         this.id = new MenuDishesId(menu.getId(), dish.getId());
+    }
+
+    public MenuDishesId getId() {
+        return id;
+    }
+
+    public void setId(MenuDishesId id) {
+        this.id = id;
     }
 
     public Menu getMenu() {

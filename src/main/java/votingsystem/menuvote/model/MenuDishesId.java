@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Embeddable
-public class MenuDishesId extends AbstractBaseEntity implements Serializable {
+public class MenuDishesId implements Serializable {
     @Column(name = "menu_id")
     private int menu_id;
 

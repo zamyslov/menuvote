@@ -3,7 +3,7 @@ package votingsystem.menuvote.model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class Menu extends AbstractBaseEntity {
 
     @Column(name = "date")
     @NotBlank
-    private Date date;
+    private LocalDate date;
 
     @OneToMany(
             mappedBy = "menu",
@@ -28,14 +28,13 @@ public class Menu extends AbstractBaseEntity {
     )
     private Set<MenuDishes> menuDishes = Collections.emptySet();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @CollectionTable(name = "votes", joinColumns = @JoinColumn(name = "menu_id"))
+    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     private Set<Vote> votes;
 
     public Menu() {
     }
 
-    public Menu(Integer id, Restaurant restaurant, Date date) {
+    public Menu(Integer id, Restaurant restaurant, LocalDate date) {
         super(id);
         this.restaurant = restaurant;
         this.date = date;
@@ -49,11 +48,11 @@ public class Menu extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
