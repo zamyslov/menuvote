@@ -89,7 +89,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void addMenuDish(int menu_id, int dish_id, double price) {
         Menu menu = menuRepository.get(menu_id);
-        menu.getMenuDishes().add(new MenuDishes(menu, price, dishRepository.get(dish_id)));
+        menu.getMenuDishes().add(new MenuDishes(menu, dishRepository.get(dish_id), price));
         update(menu);
     }
 }

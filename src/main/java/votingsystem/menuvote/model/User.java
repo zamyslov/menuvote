@@ -1,16 +1,11 @@
 package votingsystem.menuvote.model;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -43,7 +38,7 @@ public class User extends AbstractNamedEntity {
     @NotNull
     private Date registered = new Date();
 
-//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    //    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
@@ -128,8 +123,8 @@ public class User extends AbstractNamedEntity {
 
         User that = (User) o;
         return Objects.equals(name, that.name) &&
-                Objects.equals(email, that.email)&&
-                Objects.equals(password, that.password)&&
+                Objects.equals(email, that.email) &&
+                Objects.equals(password, that.password) &&
                 Objects.equals(registered, that.registered);
     }
 

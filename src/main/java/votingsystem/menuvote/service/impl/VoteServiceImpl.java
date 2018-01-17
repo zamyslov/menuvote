@@ -39,18 +39,23 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    public List<Vote> getAll() {
+        return repository.getAll();
+    }
+
+    @Override
     public void delete(LocalDate date, int user_id) throws NotFoundException {
         repository.delete(date, user_id);
     }
 
     @Override
     public void update(Vote vote, int user_id) throws NotFoundException {
-        update(vote, user_id, LocalDate.now());
+        update(vote, user_id, LocalDateTime.now());
     }
 
     @Override
-    public void update(Vote vote, int user_id, LocalDate date) throws NotFoundException {
-        if (LocalDateTime.now().isAfter(LocalDateTime.of(date, LocalTime.of(11,00)))) {
+    public void update(Vote vote, int user_id, LocalDateTime date) throws NotFoundException {
+        if (date.isAfter(LocalDateTime.of(LocalDate.now(), LocalTime.of(11,00)))) {
             throw new ClosedPeriodException("This period is closed for votes");
         }else {
             repository.save(vote);

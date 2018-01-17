@@ -7,6 +7,7 @@ import votingsystem.menuvote.repository.datajpa.CrudVoteRepository;
 import votingsystem.menuvote.repository.VoteRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class DataJpaVoteRepositoryImpl implements VoteRepository {
@@ -17,6 +18,11 @@ public class DataJpaVoteRepositoryImpl implements VoteRepository {
     @Override
     public Vote save(Vote vote) {
         return crudRepository.save(vote);
+    }
+
+    @Override
+    public List<Vote> getAll() {
+        return crudRepository.getAll();
     }
 
     @Override

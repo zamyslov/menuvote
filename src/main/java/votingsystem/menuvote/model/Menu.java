@@ -1,8 +1,7 @@
 package votingsystem.menuvote.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Objects;
@@ -16,8 +15,8 @@ public class Menu extends AbstractBaseEntity {
     @CollectionTable(name = "restaurants", joinColumns = @JoinColumn(name = "id"))
     private Restaurant restaurant;
 
-    @Column(name = "date")
-    @NotBlank
+    @Column(name = "date", columnDefinition = "date default now()")
+    @NotNull
     private LocalDate date;
 
     @OneToMany(

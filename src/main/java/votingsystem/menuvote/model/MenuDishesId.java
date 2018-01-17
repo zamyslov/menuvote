@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
 @Embeddable
 public class MenuDishesId implements Serializable {
     @Column(name = "menu_id")

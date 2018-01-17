@@ -6,14 +6,15 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Embeddable
-@Table(name = "menus_dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id, dish_id"}, name = "menus_dishes_idx")})
+//@Table(name = "menus_dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id, dish_id"}, name = "menus_dishes_idx")})
+@Table(name = "menus_dishes")
 public class MenuDishes extends MenuDishesId {
 
     @EmbeddedId
     private MenuDishesId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "menu_id", referencedColumnName = "id", nullable = false)
     @MapsId("menu_id")
     private Menu menu;
 
@@ -22,6 +23,7 @@ public class MenuDishes extends MenuDishesId {
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "dish_id", referencedColumnName = "id", nullable = false)
     @MapsId("dish_id")
     private Dish dish;
 

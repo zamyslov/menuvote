@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static votingsystem.menuvote.model.AbstractBaseEntity.START_SEQ;
 
 public class RestaurantTestData {
-    public static final int RES1_ID = Integer.valueOf(START_SEQ) + 4;
+    public static final int RES1_ID = Integer.valueOf(START_SEQ) + 5;
     public static final int RES2_ID = RES1_ID + 1;
 
     public static final Restaurant RES1 = new Restaurant(RES1_ID, "Restaurant1", "Sumskaya, 20");
