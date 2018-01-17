@@ -28,6 +28,7 @@
 		<hikari.version>2.7.2</hikari.version>
 		<h2.version>1.4.196</h2.version>
 
+		<hibernate.version>5.2.12.Final</hibernate.version>
 		<!--Tools-->
 		<ehcache.version>2.10.4</ehcache.version>
 
@@ -66,6 +67,11 @@
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>${hikari.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<!--Test-->

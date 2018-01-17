@@ -17,7 +17,7 @@ import static votingsystem.menuvote.service.RestaurantTestData.RES2;
 import static votingsystem.menuvote.service.VoteTestData.*;
 
 public class MenuTestData {
-    public static final int MENU1_ID = Integer.valueOf(START_SEQ) + 9;
+    public static final int MENU1_ID = Integer.valueOf(START_SEQ) + 10;
     public static final int MENU2_ID = MENU1_ID + 1;
 
     public static final Menu MENU1 = new Menu(MENU1_ID, RES1, LocalDate.of(2017, 12, 20));

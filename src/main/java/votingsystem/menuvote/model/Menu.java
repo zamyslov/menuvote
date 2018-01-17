@@ -1,5 +1,7 @@
 package votingsystem.menuvote.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -17,7 +19,8 @@ public class Menu extends AbstractBaseEntity {
 
     @Column(name = "date", columnDefinition = "date default now()")
     @NotNull
-    private LocalDate date;
+    @Type(type = "java.time.LocalDate")
+    private LocalDate date = LocalDate.now();
 
     @OneToMany(
             mappedBy = "menu",
@@ -94,7 +97,6 @@ public class Menu extends AbstractBaseEntity {
                 "restaurant=" + restaurant +
                 ", date=" + date +
                 ", dishes=" + menuDishes +
-                ", votes=" + votes +
                 ", id=" + id +
                 '}';
     }

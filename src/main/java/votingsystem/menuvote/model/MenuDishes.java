@@ -72,7 +72,6 @@ public class MenuDishes extends MenuDishesId {
     @Override
     public String toString() {
         return "MenuDishes{" +
-                "menu=" + menu +
                 ", price=" + price +
                 ", dishes=" + dish +
                 ", id=" + id +
