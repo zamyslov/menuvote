@@ -26,12 +26,12 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     Optional<Menu> getById(Integer id);
 
-    @Query("DELETE FROM Menu m WHERE m.date BETWEEN :startDate AND :endDate ORDER BY m.date")
+    @Query("SELECT m FROM Menu m WHERE m.date BETWEEN :startDate AND :endDate ORDER BY m.date")
     List<Menu> getBetween(LocalDate startDate, LocalDate endDate);
 
 
     @EntityGraph(attributePaths = {"votes"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("DELETE FROM Menu m WHERE m.date BETWEEN :startDate AND :endDate ORDER BY m.date")
+    @Query("SELECT m FROM Menu m WHERE m.date BETWEEN :startDate AND :endDate ORDER BY m.date")
     List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate);
 
 

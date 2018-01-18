@@ -8,10 +8,10 @@ import java.util.Objects;
 @Entity
 //@Table(name = "menus_dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id, dish_id"}, name = "menus_dishes_idx")})
 @Table(name = "menus_dishes")
-public class MenuDishes extends MenuDishesId {
+public class MenuDishes {
 
     @EmbeddedId
-    private MenuDishesId id;
+    private MenuDishesId id = new MenuDishesId();
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "menu_id", referencedColumnName = "id", nullable = false)
@@ -67,15 +67,6 @@ public class MenuDishes extends MenuDishesId {
 
     public void setDish(Dish dish) {
         this.dish = dish;
-    }
-
-    @Override
-    public String toString() {
-        return "MenuDishes{" +
-                ", price=" + price +
-                ", dishes=" + dish +
-                ", id=" + id +
-                '}';
     }
 
     @Override

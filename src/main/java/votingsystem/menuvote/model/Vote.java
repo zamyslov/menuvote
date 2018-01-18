@@ -1,6 +1,10 @@
 package votingsystem.menuvote.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -15,10 +19,16 @@ public class Vote extends AbstractBaseEntity {
     @JoinColumn(name = "menu_id", referencedColumnName = "id", nullable = false)
     private Menu menu;
 
-    public Vote(Integer id, User user, Menu menu) {
+    @Column(name = "date", columnDefinition = "date default now()")
+    @NotNull
+    @Type(type = "java.time.LocalDate")
+    private LocalDate date = LocalDate.now();
+
+    public Vote(Integer id, User user, Menu menu, LocalDate date) {
         super(id);
         this.user = user;
         this.menu = menu;
+        this.date = date;
     }
 
     public Vote() {
@@ -34,6 +44,14 @@ public class Vote extends AbstractBaseEntity {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public void setMenu(Menu menu) {
@@ -56,6 +74,7 @@ public class Vote extends AbstractBaseEntity {
         return "Vote{" +
                 "user=" + user +
                 ", menu=" + menu +
+                ", date=" + date +
                 ", id=" + id +
                 '}';
     }

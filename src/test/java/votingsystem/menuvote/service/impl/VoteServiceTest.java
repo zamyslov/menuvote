@@ -8,7 +8,6 @@ import votingsystem.menuvote.service.VoteService;
 import votingsystem.menuvote.util.exception.ClosedPeriodException;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,15 +34,15 @@ public class VoteServiceTest extends AbstractServiceTest {
 
     @Test
     public void create() throws Exception {
-        Vote newVote = new Vote(null, USER3, MENU1);
+        Vote newVote = new Vote(null, USER3, MENU1, LocalDate.of(2017, 12, 20));
         Vote created = service.create(newVote);
         newVote.setId(created.getId());
-        assertMatch(service.getAll(), newVote, VOTE1, VOTE2, VOTE3, VOTE4);
+        assertMatch(service.getAll(), VOTE1, VOTE2, VOTE3, VOTE4, newVote);
     }
 
     @Test(expected = DataAccessException.class)
     public void duplicateVoteCreate() throws Exception {
-        service.create(new Vote(null, USER, MENU1));
+        service.create(new Vote(null, USER, MENU1, LocalDate.of(2017, 12, 20)));
     }
 
     @Test
@@ -56,7 +55,6 @@ public class VoteServiceTest extends AbstractServiceTest {
     public void notFoundDelete() throws Exception {
         service.delete(VOTE1.getMenu().getDate(), 1);
     }
-
 
     @Test
     public void update() throws Exception {
@@ -79,9 +77,4 @@ public class VoteServiceTest extends AbstractServiceTest {
         assertMatch(all, VOTE1, VOTE2, VOTE3, VOTE4);
     }
 
-    @Test
-    public void testValidation() throws Exception {
-        validateRootCause(() -> service.create(new Vote(null, null, MENU1)), ConstraintViolationException.class);
-        validateRootCause(() -> service.create(new Vote(null, USER3, null)), ConstraintViolationException.class);
-    }
 }

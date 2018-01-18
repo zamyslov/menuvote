@@ -45,7 +45,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void delete(LocalDate date, int user_id) throws NotFoundException {
-        repository.delete(date, user_id);
+        checkNotFound(repository.delete(date, user_id),"date:"+date+"user:"+user_id);
     }
 
     @Override

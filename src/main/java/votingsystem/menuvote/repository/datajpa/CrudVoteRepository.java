@@ -14,7 +14,7 @@ import java.util.List;
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM Vote v WHERE v.user.id=:user_id and v.menu.date =:date")
+    @Query("DELETE FROM Vote v WHERE v.date=:date AND v.user.id=:user_id")
     int delete(@Param("date") LocalDate date, @Param("user_id") int user_id);
 
 

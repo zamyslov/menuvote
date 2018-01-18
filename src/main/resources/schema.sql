@@ -70,8 +70,9 @@ CREATE TABLE votes
   id               INTEGER default global_seq.nextval primary key,
   user_id          INTEGER                 NOT NULL,
   menu_id          INTEGER                 NOT NULL,
+  date             DATE                    NOT NULL,
 --  CONSTRAINT votes_idx UNIQUE (user_id, menu_id),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
   FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX votes_idx ON votes (user_id, menu_id);
+CREATE UNIQUE INDEX votes_idx ON votes (user_id, date);
