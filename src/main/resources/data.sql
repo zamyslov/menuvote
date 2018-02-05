@@ -20,7 +20,7 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100001),
   ('ROLE_USER', 100002),
   ('ROLE_USER', 100003),
-  ('ROLE_ADMIN', 100003);
+  ('ROLE_ADMIN', 100004);
 
 INSERT INTO restaurants (name, address) VALUES
   ('Restaurant1', 'Sumskaya, 20'), --100005
