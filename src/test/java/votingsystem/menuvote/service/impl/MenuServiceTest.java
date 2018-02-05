@@ -13,7 +13,6 @@ import java.util.List;
 
 import static votingsystem.menuvote.service.DishTestData.DISH2;
 import static votingsystem.menuvote.service.DishTestData.DISH3;
-import static votingsystem.menuvote.service.MenuDishesTestData.MENUDISH3;
 import static votingsystem.menuvote.service.MenuTestData.*;
 import static votingsystem.menuvote.service.RestaurantTestData.RES1;
 
@@ -96,7 +95,7 @@ public class MenuServiceTest extends AbstractServiceTest {
 
     @Test
     public void testValidation() {
-//        validateRootCause(() -> service.create(new Menu(null, null, LocalDate.of(2017, 12, 31))), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Menu(null, RES1, null)), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Menu(null, null, LocalDate.of(2017, 12, 20))), ConstraintViolationException.class);
     }
 }

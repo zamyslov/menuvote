@@ -15,6 +15,7 @@ public class Menu extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @CollectionTable(name = "restaurants", joinColumns = @JoinColumn(name = "id"))
+    @NotNull
     private Restaurant restaurant;
 
     @Column(name = "date", columnDefinition = "date default now()")

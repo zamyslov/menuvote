@@ -2,7 +2,6 @@ package votingsystem.menuvote.service;
 
 
 import votingsystem.menuvote.model.Dish;
-import votingsystem.menuvote.model.Restaurant;
 
 import java.util.Arrays;
 
@@ -10,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static votingsystem.menuvote.model.AbstractBaseEntity.START_SEQ;
 
 public class DishTestData {
-    public static final int DISH1_ID = Integer.valueOf(START_SEQ) + 7;
+    private static final int DISH1_ID = Integer.valueOf(START_SEQ) + 7;
     public static final int DISH2_ID = DISH1_ID + 1;
     public static final int DISH3_ID = DISH2_ID + 1;
 
@@ -19,7 +18,7 @@ public class DishTestData {
     public static final Dish DISH3 = new Dish(DISH3_ID, "Fish");
 
     public static void assertMatch(Dish actual, Dish expected) {
-        assertThat(actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     public static void assertMatch(Iterable<Dish> actual, Dish... expected) {

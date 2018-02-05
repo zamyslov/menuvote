@@ -11,9 +11,9 @@ import static votingsystem.menuvote.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
     public static final int USER_ID = Integer.valueOf(START_SEQ);
-    public static final int USER1_ID = USER_ID + 1;
-    public static final int USER2_ID = USER_ID + 2;
-    public static final int USER3_ID = USER_ID + 3;
+    private static final int USER1_ID = USER_ID + 1;
+    private static final int USER2_ID = USER_ID + 2;
+    private static final int USER3_ID = USER_ID + 3;
     public static final int ADMIN_ID = USER_ID + 4;
 
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", Role.ROLE_USER);

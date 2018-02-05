@@ -18,7 +18,7 @@ import static votingsystem.menuvote.service.VoteTestData.*;
 
 public class MenuTestData {
     public static final int MENU1_ID = Integer.valueOf(START_SEQ) + 10;
-    public static final int MENU2_ID = MENU1_ID + 1;
+    private static final int MENU2_ID = MENU1_ID + 1;
 
     public static final Menu MENU1 = new Menu(MENU1_ID, RES1, LocalDate.of(2017, 12, 20));
     public static final Menu MENU2 = new Menu(MENU2_ID, RES2, LocalDate.of(2017, 12, 20));
@@ -43,7 +43,7 @@ public class MenuTestData {
     }
 
     public static void assertMatch(Menu actual, Menu expected) {
-        assertThat(actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     public static void assertMatch(Iterable<Menu> actual, Menu... expected) {

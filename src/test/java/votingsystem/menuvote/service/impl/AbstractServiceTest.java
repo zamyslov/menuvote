@@ -7,25 +7,14 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import votingsystem.menuvote.MenuVoteApplication;
-import votingsystem.menuvote.MenuVoteApplicationTests;
 import votingsystem.menuvote.config.JpaConfig;
 import votingsystem.menuvote.service.TimingRules;
-
-import javax.annotation.sql.DataSourceDefinition;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static votingsystem.menuvote.util.ValidationUtil.getRootCause;

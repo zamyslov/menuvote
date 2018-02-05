@@ -17,7 +17,7 @@ public class MenuDishesTestData {
     public static final MenuDishes MENUDISH4 = new MenuDishes(MENU2, DISH2, 10.4);
 
     public static void assertMatch(MenuDishes actual, MenuDishes expected) {
-        assertThat(actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     public static void assertMatch(Iterable<MenuDishes> actual, MenuDishes... expected) {

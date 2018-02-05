@@ -23,12 +23,12 @@ public class DishServiceTest extends AbstractServiceTest {
     protected DishService service;
 
     @Before
-    public void setUpCacheUsers() throws Exception {
+    public void setUpCacheUsers() {
         cacheManager.getCache("dishes").clear();
     }
 
     @Test
-    public void create() throws Exception {
+    public void create() {
         Dish newDish = new Dish(null, "Cake");
         Dish created = service.create(newDish);
         newDish.setId(created.getId());
@@ -36,34 +36,34 @@ public class DishServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = DataAccessException.class)
-    public void duplicateDishCreate() throws Exception {
+    public void duplicateDishCreate() {
         service.create(new Dish(null, "Meat"));
     }
 
     @Test
-    public void delete() throws Exception {
+    public void delete() {
         service.delete(DISH2_ID);
         assertMatch(service.getAll(), DISH1, DISH3);
     }
 
     @Test(expected = NotFoundException.class)
-    public void notFoundDelete() throws Exception {
+    public void notFoundDelete() {
         service.delete(1);
     }
 
     @Test
-    public void get() throws Exception {
+    public void get() {
         Dish dish = service.get(DISH2_ID);
         assertMatch(dish, DISH2);
     }
 
     @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
+    public void getNotFound() {
         service.get(1);
     }
 
     @Test
-    public void update() throws Exception {
+    public void update() {
         Dish updated = new Dish(DISH3);
         updated.setName("new Dish");
         service.update(updated);
@@ -71,13 +71,13 @@ public class DishServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void getAll() throws Exception {
+    public void getAll() {
         List<Dish> all = service.getAll();
         assertMatch(all, DISH1, DISH2, DISH3);
     }
 
     @Test
-    public void testValidation() throws Exception {
+    public void testValidation() {
         validateRootCause(() -> service.create(new Dish(null, "  ")), ConstraintViolationException.class);
     }
 }
