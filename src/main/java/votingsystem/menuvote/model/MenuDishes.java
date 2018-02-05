@@ -3,6 +3,7 @@ package votingsystem.menuvote.model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +20,7 @@ public class MenuDishes {
     private Menu menu;
 
     @Column(name = "price")
-    @NotBlank
+    @NotNull
     private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
