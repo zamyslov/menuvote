@@ -55,7 +55,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> getbyDate(LocalDate date) throws NotFoundException {
+    public List<Menu> getByDate(LocalDate date) throws NotFoundException {
         return getBetween(date, date);
     }
 

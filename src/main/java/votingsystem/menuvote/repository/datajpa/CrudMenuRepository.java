@@ -1,6 +1,5 @@
 package votingsystem.menuvote.repository.datajpa;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,12 +26,12 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     Optional<Menu> getById(Integer id);
 
     @Query("SELECT m FROM Menu m WHERE m.date BETWEEN :startDate AND :endDate ORDER BY m.date")
-    List<Menu> getBetween(LocalDate startDate, LocalDate endDate);
+    List<Menu> getBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
 
     @EntityGraph(attributePaths = {"votes"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.date BETWEEN :startDate AND :endDate ORDER BY m.date")
-    List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate);
+    List<Menu> getBetweenWithVotes(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
 
 
