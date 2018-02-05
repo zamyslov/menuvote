@@ -5,14 +5,25 @@
          monitoring="autodetect"
          dynamicConfig="true">
 
-    <!--<cache name="instruments"-->
-           <!--maxElementsInMemory="100"-->
-           <!--eternal="false"-->
-           <!--overflowToDisk="false"-->
-           <!--timeToLiveSeconds="300"-->
-           <!--timeToIdleSeconds="0"-->
-           <!--memoryStoreEvictionPolicy="LFU"-->
-           <!--transactionalMode="off">-->
-    <!--</cache>-->
+    <defaultCache maxElementsInMemory="10000"
+                  eternal="false"
+                  timeToIdleSeconds="300"
+                  timeToLiveSeconds="600"
+                  diskSpoolBufferSizeMB="30"
+                  maxElementsOnDisk="10000"
+                  diskExpiryThreadIntervalSeconds="120"
+                  memoryStoreEvictionPolicy="LRU" statistics="false">
+    </defaultCache>
+
+    <cache name="users"
+           maxElementsInMemory="100"
+           eternal="false"
+           overflowToDisk="false"
+           timeToLiveSeconds="300"
+           timeToIdleSeconds="0"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+    </cache>
+
 
 </ehcache>

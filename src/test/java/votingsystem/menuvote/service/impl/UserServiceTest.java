@@ -1,7 +1,9 @@
 package votingsystem.menuvote.service.impl;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import votingsystem.menuvote.model.Role;
 import votingsystem.menuvote.model.User;
@@ -15,16 +17,16 @@ import static votingsystem.menuvote.service.UserTestData.*;
 
 public class UserServiceTest extends AbstractServiceTest {
 
-//    @Autowired
-//    private CacheManager cacheManager;
+    @Autowired
+    private CacheManager cacheManager;
 
     @Autowired
     protected UserService service;
 
-//    @Before
-//    public void setUpCacheUsers() throws Exception {
-//        cacheManager.getCache("users").clear();
-//    }
+    @Before
+    public void setUpCacheUsers() throws Exception {
+        cacheManager.getCache("users").clear();
+    }
 
     @Test
     public void create() throws Exception {

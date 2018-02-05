@@ -3,7 +3,9 @@ package votingsystem.menuvote.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +18,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import votingsystem.menuvote.MenuVoteApplication;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -57,6 +60,11 @@ public class JpaConfig implements TransactionManagementConfigurer {
         entityManagerFactoryBean.setDataSource(configureDataSource());
         entityManagerFactoryBean.setPackagesToScan("votingsystem.menuvote");
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        Map<String,String> jpaPropertyMap = new HashMap<>();
+        jpaPropertyMap.put("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        jpaPropertyMap.put("hibernate.cache.use_second_level_cache","true");
+        jpaPropertyMap.put("hibernate.cache.use_query_cache","true");
+        entityManagerFactoryBean.setJpaPropertyMap(jpaPropertyMap);
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
@@ -72,7 +80,7 @@ public class JpaConfig implements TransactionManagementConfigurer {
         return new JpaTransactionManager();
     }
 
-//    @Bean(name = "CacheManager")
+    //    @Bean(name = "CacheManager")
 //    public EhCacheManagerFactoryBean ehCacheCacheManager() {
 //        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
 //        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
@@ -80,4 +88,16 @@ public class JpaConfig implements TransactionManagementConfigurer {
 //        return cmfb;
 //    }
 
+    @Bean(name = "cacheManager")
+    public CacheManager cacheManager() {
+        return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean ehCacheCacheManager() {
+        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        cmfb.setShared(true);
+        return cmfb;
+    }
 }
