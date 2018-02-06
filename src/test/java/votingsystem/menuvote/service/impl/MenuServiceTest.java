@@ -94,6 +94,13 @@ public class MenuServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void getBetweenWithVotes() {
+        LocalDate currentDate = LocalDate.of(2017, 12, 20);
+        List<Menu> all = service.getBetweenWithVotes(currentDate, currentDate);
+        assertMatch(all, MENU1, MENU2);
+    }
+
+    @Test
     public void testValidation() {
         validateRootCause(() -> service.create(new Menu(null, RES1, null)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Menu(null, null, LocalDate.of(2017, 12, 20))), ConstraintViolationException.class);

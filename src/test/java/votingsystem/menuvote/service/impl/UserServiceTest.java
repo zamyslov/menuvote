@@ -11,11 +11,12 @@ import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
 import java.util.List;
 
 import static votingsystem.menuvote.service.UserTestData.*;
+import static votingsystem.menuvote.service.UserTestData.assertMatch;
 import static votingsystem.menuvote.service.VoteTestData.*;
+import static votingsystem.menuvote.service.VoteTestData.assertMatch;
 
 public class UserServiceTest extends AbstractServiceTest {
 
@@ -85,11 +86,12 @@ public class UserServiceTest extends AbstractServiceTest {
         assertMatch(all, ADMIN, USER, USER1, USER2, USER3);
     }
 
-//    @Test
-//    public void getWithVotes() {
-//        User user = service.getWithVotes(USER.getId());
-//        assertMatch(user.getVotes().subList(0,1), Arrays.asList(VOTE1));
-//    }
+    @Test
+    public void getWithVotes() {
+        User user = service.getWithVotes(USER2.getId());
+        assertMatch(user, USER2);
+        assertMatch(user.getVotes(), VOTE5, VOTE2);
+    }
 
     @Test
     public void testValidation() {

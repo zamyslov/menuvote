@@ -38,6 +38,6 @@ public class DataJpaMenuRepositoryImpl implements MenuRepository {
 
     @Override
     public List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate) {
-        return crudRepository.getBetween(startDate, endDate);
+        return crudRepository.getBetweenWithVotes(startDate, endDate);
     }
 }

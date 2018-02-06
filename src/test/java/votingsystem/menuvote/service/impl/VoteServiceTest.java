@@ -29,7 +29,7 @@ public class VoteServiceTest extends AbstractServiceTest {
         Vote newVote = new Vote(null, USER3, MENU1, LocalDate.of(2017, 12, 20));
         Vote created = service.create(newVote);
         newVote.setId(created.getId());
-        assertMatch(service.getAll(), VOTE1, VOTE2, VOTE3, VOTE4, newVote);
+        assertMatch(service.getAll(), VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6, newVote);
     }
 
     @Test(expected = DataAccessException.class)
@@ -40,7 +40,7 @@ public class VoteServiceTest extends AbstractServiceTest {
     @Test
     public void delete() {
         service.delete(VOTE1.getMenu().getDate(), VOTE1.getUser().getId());
-        assertMatch(service.getAll(), VOTE2, VOTE3, VOTE4);
+        assertMatch(service.getAll(), VOTE2, VOTE3, VOTE4, VOTE5, VOTE6);
     }
 
     @Test(expected = NotFoundException.class)
@@ -53,7 +53,7 @@ public class VoteServiceTest extends AbstractServiceTest {
         Vote updated = VOTE1;
         updated.setMenu(MENU2);
         service.update(updated, USER_ID, LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 0)));
-        assertMatch(service.getAll(), VOTE1, VOTE2, VOTE3, VOTE4);
+        assertMatch(service.getAll(), VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6);
     }
 
     @Test(expected = ClosedPeriodException.class)
@@ -66,7 +66,7 @@ public class VoteServiceTest extends AbstractServiceTest {
     @Test
     public void getAll() {
         List<Vote> all = service.getAll();
-        assertMatch(all, VOTE1, VOTE2, VOTE3, VOTE4);
+        assertMatch(all, VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6);
     }
 
 }

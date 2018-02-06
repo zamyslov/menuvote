@@ -15,6 +15,8 @@ public class MenuDishesTestData {
     public static final MenuDishes MENUDISH2 = new MenuDishes(MENU1, DISH2, 15.5);
     public static final MenuDishes MENUDISH3 = new MenuDishes(MENU2, DISH3, 21.6);
     public static final MenuDishes MENUDISH4 = new MenuDishes(MENU2, DISH2, 10.4);
+    public static final MenuDishes MENUDISH5 = new MenuDishes(MENU3, DISH1, 15.5);
+    public static final MenuDishes MENUDISH6 = new MenuDishes(MENU4, DISH3, 25.5);
 
     public static void assertMatch(MenuDishes actual, MenuDishes expected) {
         assertThat(actual).isEqualTo(expected);
