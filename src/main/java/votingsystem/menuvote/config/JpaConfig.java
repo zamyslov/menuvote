@@ -80,14 +80,6 @@ public class JpaConfig implements TransactionManagementConfigurer {
         return new JpaTransactionManager();
     }
 
-    //    @Bean(name = "CacheManager")
-//    public EhCacheManagerFactoryBean ehCacheCacheManager() {
-//        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
-//        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
-//        cmfb.setShared(true);
-//        return cmfb;
-//    }
-
     @Bean(name = "cacheManager")
     public CacheManager cacheManager() {
         return new EhCacheCacheManager(ehCacheCacheManager().getObject());
