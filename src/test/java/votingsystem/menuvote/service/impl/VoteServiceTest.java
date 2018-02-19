@@ -90,9 +90,16 @@ public class VoteServiceTest extends AbstractServiceTest {
         checkVoteForTime(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
     }
 
+    @Test
     public void checkVoteForTimeCorrect() {
         setMaxTimeForVote(LocalTime.now().plusMinutes(1));
         assertTrue(checkVoteForTime(LocalDateTime.of(LocalDate.now(), LocalTime.now())));
+    }
+
+    @Test
+    public void getByDateAndUser() {
+        Vote updated = service.getByDateAndUser(VOTE1.getDate(), VOTE1.getUser());
+        assertMatch(updated, VOTE1);
     }
 
     @Test
