@@ -52,7 +52,7 @@ public class MenuDishesServiceImpl implements MenuDishesService {
     @Override
     public void update(MenuDishes menuDishes) {
         Assert.notNull(menuDishes, "menu dishes must not be null");
-        //checkNotFoundWithId(repository.save(menuDishes), menuDishes.getId());
+        repository.save(menuDishes);
     }
 
 }
