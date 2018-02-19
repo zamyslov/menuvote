@@ -18,4 +18,8 @@ public class VoteUtil {
             return true;
         }
     }
+
+    public static void setMaxTimeForVote (LocalTime time) {
+        maxTimeForVote = time;
+    }
 }

@@ -29,7 +29,7 @@ public class VoteServiceImpl implements VoteService {
     public Vote create(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
         checkVoteForTime(LocalDateTime.now());
-        return create(vote);
+        return repository.save(vote);
     }
 
     @Override
