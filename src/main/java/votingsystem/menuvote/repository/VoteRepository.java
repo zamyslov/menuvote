@@ -12,4 +12,6 @@ public interface VoteRepository {
 
     // false if not found
     boolean delete(LocalDate date, int user_id);
+
+    Vote getByDateAndUser(LocalDate date, int user_id);
 }

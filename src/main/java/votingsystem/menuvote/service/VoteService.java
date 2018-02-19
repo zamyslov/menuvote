@@ -17,8 +17,6 @@ public interface VoteService {
 
     void delete(LocalDate date, int user_id) throws NotFoundException;
 
-    void update(Vote vote, int user_id) throws ClosedPeriodException;
-
-    void update(Vote vote, int user_id, LocalDateTime date) throws ClosedPeriodException;
+    void update(Vote vote);
 
 }

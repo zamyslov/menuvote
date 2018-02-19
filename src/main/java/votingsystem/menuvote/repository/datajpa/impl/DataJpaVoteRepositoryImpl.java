@@ -30,4 +30,8 @@ public class DataJpaVoteRepositoryImpl implements VoteRepository {
         return crudRepository.delete(date, user_id) != 0;
     }
 
+    @Override
+    public Vote getByDateAndUser(LocalDate date, int user_id) {
+        return crudRepository.getByDateAndUser(date, user_id);
+    }
 }

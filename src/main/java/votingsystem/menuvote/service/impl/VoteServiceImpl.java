@@ -6,15 +6,14 @@ import org.springframework.util.Assert;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.repository.VoteRepository;
 import votingsystem.menuvote.service.VoteService;
-import votingsystem.menuvote.util.exception.ClosedPeriodException;
 import votingsystem.menuvote.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static votingsystem.menuvote.util.ValidationUtil.checkNotFound;
+import static votingsystem.menuvote.util.VoteUtil.checkVoteForTime;
 
 @Service
 public class VoteServiceImpl implements VoteService {
@@ -29,7 +28,8 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public Vote create(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
-        return repository.save(vote);
+        checkVoteForTime(LocalDateTime.now());
+        return create(vote);
     }
 
     @Override
@@ -39,20 +39,13 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public void delete(LocalDate date, int user_id) throws NotFoundException {
+        checkVoteForTime(LocalDateTime.now());
         checkNotFound(repository.delete(date, user_id), "date:" + date + "user:" + user_id);
     }
 
     @Override
-    public void update(Vote vote, int user_id) throws NotFoundException {
-        update(vote, user_id, LocalDateTime.now());
-    }
-
-    @Override
-    public void update(Vote vote, int user_id, LocalDateTime date) throws NotFoundException {
-        if (date.isAfter(LocalDateTime.of(LocalDate.now(), LocalTime.of(11, 0)))) {
-            throw new ClosedPeriodException("This period is closed for votes");
-        } else {
-            repository.save(vote);
-        }
+    public void update(Vote vote) {
+        checkVoteForTime(LocalDateTime.now());
+        repository.save(vote);
     }
 }
