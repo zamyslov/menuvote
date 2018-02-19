@@ -1,5 +1,6 @@
 package votingsystem.menuvote.repository;
 
+import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
 
 import java.time.LocalDate;
@@ -13,5 +14,5 @@ public interface VoteRepository {
     // false if not found
     boolean delete(LocalDate date, int user_id);
 
-    Vote getByDateAndUser(LocalDate date, int user_id);
+    Vote getByDateAndUser(LocalDate date, User user);
 }

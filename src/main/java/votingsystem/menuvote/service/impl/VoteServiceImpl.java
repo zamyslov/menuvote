@@ -3,6 +3,7 @@ package votingsystem.menuvote.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.repository.VoteRepository;
 import votingsystem.menuvote.service.VoteService;
@@ -47,5 +48,12 @@ public class VoteServiceImpl implements VoteService {
     public void update(Vote vote) {
         checkVoteForTime(LocalDateTime.now());
         repository.save(vote);
+    }
+
+    @Override
+    public Vote getByDateAndUser(LocalDate date, User user) {
+        Assert.notNull(date, "date must not be null");
+        Assert.notNull(user, "user must not be null");
+        return repository.getByDateAndUser(date, user);
     }
 }

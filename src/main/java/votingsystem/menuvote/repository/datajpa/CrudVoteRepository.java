@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
 
 import java.time.LocalDate;
@@ -24,6 +25,6 @@ public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     @Transactional
     Vote save(Vote vote);
 
-    Vote getByDateAndUser(LocalDate date, int user_id);
+    Vote getByDateAndUser(LocalDate date, User user);
 
 }

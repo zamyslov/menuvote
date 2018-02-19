@@ -2,6 +2,7 @@ package votingsystem.menuvote.repository.datajpa.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.repository.datajpa.CrudVoteRepository;
 import votingsystem.menuvote.repository.VoteRepository;
@@ -31,7 +32,7 @@ public class DataJpaVoteRepositoryImpl implements VoteRepository {
     }
 
     @Override
-    public Vote getByDateAndUser(LocalDate date, int user_id) {
-        return crudRepository.getByDateAndUser(date, user_id);
+    public Vote getByDateAndUser(LocalDate date, User user) {
+        return crudRepository.getByDateAndUser(date, user);
     }
 }

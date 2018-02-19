@@ -1,6 +1,7 @@
 package votingsystem.menuvote.service;
 
 
+import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.util.exception.ClosedPeriodException;
 import votingsystem.menuvote.util.exception.NotFoundException;
@@ -18,5 +19,7 @@ public interface VoteService {
     void delete(LocalDate date, int user_id) throws NotFoundException;
 
     void update(Vote vote);
+
+    Vote getByDateAndUser(LocalDate date, User user);
 
 }
