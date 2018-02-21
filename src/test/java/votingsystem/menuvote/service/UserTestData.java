@@ -1,13 +1,17 @@
 package votingsystem.menuvote.service;
 
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import votingsystem.menuvote.model.Role;
 import votingsystem.menuvote.model.User;
+import web.json.JsonUtil;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static votingsystem.menuvote.model.AbstractBaseEntity.START_SEQ;
+import static web.json.JsonUtil.writeIgnoreProps;
 
 public class UserTestData {
     public static final int USER_ID = Integer.valueOf(START_SEQ);
@@ -33,4 +37,17 @@ public class UserTestData {
     public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("registered", "votes").isEqualTo(expected);
     }
+
+    public static ResultMatcher contentJson(User... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "registered", "password"));
+    }
+
+    public static ResultMatcher contentJson(User expected) {
+        return content().json(writeIgnoreProps(expected, "registered", "password"));
+    }
+
+    public static String jsonWithPassword(User user, String passw) {
+        return JsonUtil.writeAdditionProps(user, "password", passw);
+    }
+
 }
