@@ -67,13 +67,6 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> getBetweenWithVotes(LocalDate startDate, LocalDate endDate) {
-        Assert.notNull(startDate, "start date must not be null");
-        Assert.notNull(endDate, "end date must not be null");
-        return menuRepository.getBetweenWithVotes(startDate, endDate);
-    }
-
-    @Override
     public void deleteMenuDish(int menu_id, int dish_id) {
         Menu menu = menuRepository.get(menu_id);
         Iterator<MenuDishes> it = menu.getMenuDishes().iterator();

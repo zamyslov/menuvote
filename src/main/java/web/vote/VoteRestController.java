@@ -3,12 +3,10 @@ package web.vote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import votingsystem.menuvote.model.Menu;
 import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
@@ -27,7 +25,7 @@ public class VoteRestController {
     private VoteService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@Validated @RequestBody Menu menu) {
+    public void createOrUpdate(@Validated @RequestBody Menu menu) {
         LocalDate currentDate = LocalDate.now();
         User currentUser = AuthorizedUser.get().getUser();
         Vote currentVote = service.getByDateAndUser(currentDate, currentUser);
@@ -43,4 +41,10 @@ public class VoteRestController {
         }
     }
 
+    @DeleteMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete(@Validated @RequestBody Menu menu) {
+        log.info("delete {} for menu", menu);
+        service.delete(menu.getDate(), AuthorizedUser.id());
+    }
 }
