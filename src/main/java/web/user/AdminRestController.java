@@ -31,14 +31,9 @@ public class AdminRestController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@Validated @RequestBody User user) {
         User created = super.create(user);
-
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(uriOfNewResource);
-
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
-
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 

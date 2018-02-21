@@ -34,20 +34,9 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public List<Vote> getAll() {
-        return repository.getAll();
-    }
-
-    @Override
     public void delete(LocalDate date, int user_id) throws NotFoundException {
         checkVoteForTime(LocalDateTime.now());
         checkNotFound(repository.delete(date, user_id), "date:" + date + "user:" + user_id);
-    }
-
-    @Override
-    public void update(Vote vote) {
-        checkVoteForTime(LocalDateTime.now());
-        repository.save(vote);
     }
 
     @Override

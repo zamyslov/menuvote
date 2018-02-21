@@ -5,11 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import votingsystem.menuvote.model.Restaurant;
 import votingsystem.menuvote.service.RestaurantService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,9 +31,13 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@Validated @RequestBody Restaurant restaurant) {
+    public ResponseEntity<Restaurant> create(@Validated @RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
-        service.create(restaurant);
+        Restaurant created = service.create(restaurant);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

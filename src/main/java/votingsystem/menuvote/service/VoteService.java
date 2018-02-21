@@ -14,11 +14,7 @@ public interface VoteService {
 
     Vote create(Vote vote);
 
-    List<Vote> getAll();
-
     void delete(LocalDate date, int user_id) throws NotFoundException;
-
-    void update(Vote vote);
 
     Vote getByDateAndUser(LocalDate date, User user);
 
