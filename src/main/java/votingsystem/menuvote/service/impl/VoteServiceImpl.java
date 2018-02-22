@@ -27,6 +27,11 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    public List<Vote> getAll() {
+        return repository.getAll();
+    }
+
+    @Override
     public Vote create(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
         checkVoteForTime(LocalDateTime.now());

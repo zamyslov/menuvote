@@ -35,11 +35,6 @@ abstract public class AbstractServiceTest {
     @Autowired
     protected Environment environment;
 
-//    static {
-//        // needed only for java.util.logging (postgres driver)
-//        SLF4JBridgeHandler.install();
-//    }
-
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
     public <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {
         try {

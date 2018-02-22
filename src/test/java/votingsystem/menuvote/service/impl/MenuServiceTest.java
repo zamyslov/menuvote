@@ -96,7 +96,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     @Test
     public void getBetweenWithVotes() {
         LocalDate currentDate = LocalDate.of(2017, 12, 20);
-        List<Menu> all = service.getBetweenWithVotes(currentDate, currentDate);
+        List<Menu> all = service.getBetween(currentDate, currentDate);
         assertMatch(all, MENU1, MENU2);
     }
 

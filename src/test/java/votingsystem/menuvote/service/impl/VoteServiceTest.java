@@ -15,7 +15,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static votingsystem.menuvote.service.MenuTestData.MENU1;
-import static votingsystem.menuvote.service.MenuTestData.MENU2;
 import static votingsystem.menuvote.service.UserTestData.USER;
 import static votingsystem.menuvote.service.UserTestData.USER3;
 import static votingsystem.menuvote.service.VoteTestData.*;
@@ -66,22 +65,6 @@ public class VoteServiceTest extends AbstractServiceTest {
     public void deleteAfterMaxTime() {
         setMaxTimeForVote(LocalTime.now().minusMinutes(1));
         service.delete(VOTE1.getMenu().getDate(), 1);
-    }
-
-    @Test
-    public void update() {
-        Vote updated = VOTE1;
-        updated.setMenu(MENU2);
-        setMaxTimeForVote(LocalTime.now().plusMinutes(1));
-        service.update(updated);
-        assertMatch(service.getAll(), VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6);
-    }
-
-    @Test(expected = ClosedPeriodException.class)
-    public void updateAfterMaxTime() {
-        setMaxTimeForVote(LocalTime.now().minusMinutes(1));
-        Vote updated = VOTE1;
-        service.update(updated);
     }
 
     @Test(expected = ClosedPeriodException.class)
