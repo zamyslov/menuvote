@@ -16,7 +16,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import votingsystem.menuvote.MenuVoteApplication;
 
@@ -26,9 +25,9 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
+@Import({SpringSecurityConfig.class})
 @ComponentScan(basePackages = {"votingsystem.menuvote"})
 @EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class, entityManagerFactoryRef = "configureEntityManagerFactory", transactionManagerRef = "transactionManager")
-@EnableTransactionManagement
 public class JpaConfig implements TransactionManagementConfigurer {
 
     @Value("${spring.datasource.driverClassName}")
@@ -61,10 +60,10 @@ public class JpaConfig implements TransactionManagementConfigurer {
         entityManagerFactoryBean.setDataSource(configureDataSource());
         entityManagerFactoryBean.setPackagesToScan("votingsystem.menuvote");
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        Map<String,String> jpaPropertyMap = new HashMap<>();
-        jpaPropertyMap.put("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
-        jpaPropertyMap.put("hibernate.cache.use_second_level_cache","true");
-        jpaPropertyMap.put("hibernate.cache.use_query_cache","true");
+        Map<String, String> jpaPropertyMap = new HashMap<>();
+        jpaPropertyMap.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        jpaPropertyMap.put("hibernate.cache.use_second_level_cache", "true");
+        jpaPropertyMap.put("hibernate.cache.use_query_cache", "true");
         entityManagerFactoryBean.setJpaPropertyMap(jpaPropertyMap);
 
         Properties jpaProperties = new Properties();
@@ -77,7 +76,6 @@ public class JpaConfig implements TransactionManagementConfigurer {
 
     @Bean(name = "transactionManager")
     public PlatformTransactionManager annotationDrivenTransactionManager() {
-
         return new JpaTransactionManager();
     }
 

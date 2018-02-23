@@ -1,33 +1,32 @@
 package votingsystem.menuvote.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.web.accept.ContentNegotiationManager;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // authenticated user allow to access /**
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").access("isAnonymous()")
-                .antMatchers("/register").access("isAnonymous()")
+                .antMatchers("/login").anonymous()
+                .antMatchers("/register").anonymous()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/**").access("isAuthenticated()")
+                .antMatchers("/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().failureForwardUrl("/login?error=true")
-                .and()
-                .logout().logoutSuccessUrl("/login");
+                .formLogin();
+//                .loginPage("/login").failureUrl("/login?error=true");
     }
 
     // create two users, admin and user
@@ -39,5 +38,4 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("Admin").password("admin").roles("ADMIN");
     }
-
 }

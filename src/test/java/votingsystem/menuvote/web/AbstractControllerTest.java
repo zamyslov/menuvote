@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,19 +14,16 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import votingsystem.menuvote.config.JpaConfig;
-import votingsystem.menuvote.config.SpringSecurityConfig;
 import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.util.exception.ErrorType;
 import web.MessageUtil;
 
 import javax.annotation.PostConstruct;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {JpaConfig.class, SpringSecurityConfig.class})
+@SpringBootTest
 @Sql(scripts = "classpath:data.sql", config = @SqlConfig(encoding = "UTF-8"))
 abstract public class AbstractControllerTest {
 
@@ -47,6 +45,9 @@ abstract public class AbstractControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    private FilterChainProxy filterChainProxy;
+
     protected MessageUtil messageUtil;
 
     @PostConstruct
@@ -54,7 +55,7 @@ abstract public class AbstractControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
-                .apply(springSecurity())
+                .addFilters(filterChainProxy)
                 .build();
     }
 
