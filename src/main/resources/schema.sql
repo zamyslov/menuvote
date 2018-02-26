@@ -14,7 +14,7 @@ CREATE TABLE users
   id               INTEGER default global_seq.nextval primary key,
   name             VARCHAR                 NOT NULL,
   email            VARCHAR                 NOT NULL,
-  password         VARCHAR                 NOT NULL,
+  password         VARCHAR(60)             NOT NULL,
   registered       TIMESTAMP DEFAULT now() NOT NULL,
   enabled          BOOL DEFAULT TRUE       NOT NULL,
 );
