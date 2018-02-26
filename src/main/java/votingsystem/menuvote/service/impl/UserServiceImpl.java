@@ -3,12 +3,15 @@ package votingsystem.menuvote.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.repository.UserRepository;
 import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.util.exception.NotFoundException;
+import web.AuthorizedUser;
 
 import java.util.List;
 
@@ -16,7 +19,7 @@ import static votingsystem.menuvote.util.ValidationUtil.checkNotFound;
 import static votingsystem.menuvote.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
 
@@ -66,5 +69,15 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
     }
+
+    @Override
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
+    }
+
 
 }
