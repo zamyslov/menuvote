@@ -35,18 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .formLogin();
-//                .loginPage("/login").failureUrl("/login?error=true");
     }
-
-    // create two users, admin and user
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//
-//        auth.inMemoryAuthentication()
-//                .withUser("User").password("password").roles("USER")
-//                .and()
-//                .withUser("Admin").password("admin").roles("ADMIN");
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)

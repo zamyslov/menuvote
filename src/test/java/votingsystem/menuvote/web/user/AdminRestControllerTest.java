@@ -45,8 +45,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     public void testGetNotFound() throws Exception {
         mockMvc.perform(get(REST_URL + 1)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
