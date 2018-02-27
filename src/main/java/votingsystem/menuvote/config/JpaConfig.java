@@ -16,6 +16,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import votingsystem.menuvote.MenuVoteApplication;
 
@@ -27,6 +28,7 @@ import java.util.Properties;
 @Configuration
 @Import({SpringSecurityConfig.class})
 @ComponentScan(basePackages = {"votingsystem.menuvote"})
+@EnableTransactionManagement
 @EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class, entityManagerFactoryRef = "configureEntityManagerFactory", transactionManagerRef = "transactionManager")
 public class JpaConfig implements TransactionManagementConfigurer {
 

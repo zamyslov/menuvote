@@ -4,14 +4,14 @@ package votingsystem.menuvote.service;
 import org.springframework.test.web.servlet.ResultMatcher;
 import votingsystem.menuvote.model.Role;
 import votingsystem.menuvote.model.User;
-import web.json.JsonUtil;
+import votingsystem.menuvote.web.json.JsonUtil;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static votingsystem.menuvote.model.AbstractBaseEntity.START_SEQ;
-import static web.json.JsonUtil.writeIgnoreProps;
+import static votingsystem.menuvote.web.json.JsonUtil.writeIgnoreProps;
 
 public class UserTestData {
     public static final int USER_ID = Integer.valueOf(START_SEQ);

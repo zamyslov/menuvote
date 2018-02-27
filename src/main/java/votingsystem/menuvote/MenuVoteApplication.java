@@ -14,14 +14,10 @@ import votingsystem.menuvote.config.JpaConfig;
 public class MenuVoteApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(MenuVoteApplication.class, args);
-		String password = "admin";
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String hashedPassword = passwordEncoder.encode(password);
-
-		System.out.println(hashedPassword);
+//		String password = "admin";
+//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//		String hashedPassword = passwordEncoder.encode(password);
+//
+//		System.out.println(hashedPassword);
 	}
-//	@Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//		return application.sources(MenuVoteApplication.class);
-//	}
 }

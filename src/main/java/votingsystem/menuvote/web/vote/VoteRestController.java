@@ -1,4 +1,4 @@
-package web.vote;
+package votingsystem.menuvote.web.vote;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import votingsystem.menuvote.model.Menu;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.service.VoteService;
-import web.AuthorizedUser;
+import votingsystem.menuvote.web.AuthorizedUser;
 
 import java.net.URI;
 import java.time.LocalDate;

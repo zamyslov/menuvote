@@ -1,4 +1,4 @@
-package web.menu;
+package votingsystem.menuvote.web.menu;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

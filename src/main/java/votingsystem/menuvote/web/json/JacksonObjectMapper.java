@@ -1,4 +1,4 @@
-package web.json;
+package votingsystem.menuvote.web.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

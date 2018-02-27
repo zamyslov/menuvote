@@ -10,8 +10,8 @@ import votingsystem.menuvote.model.Role;
 import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.util.exception.ErrorType;
 import votingsystem.menuvote.web.AbstractControllerTest;
-import web.json.JsonUtil;
-import web.user.AdminRestController;
+import votingsystem.menuvote.web.json.JsonUtil;
+import votingsystem.menuvote.web.user.AdminRestController;
 
 import java.util.Collections;
 
@@ -23,7 +23,7 @@ import static votingsystem.menuvote.TestUtil.userHttpBasic;
 import static votingsystem.menuvote.service.UserTestData.ADMIN;
 import static votingsystem.menuvote.service.UserTestData.ADMIN_ID;
 import static votingsystem.menuvote.service.UserTestData.*;
-import static web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
+import static votingsystem.menuvote.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
 
 public class AdminRestControllerTest extends AbstractControllerTest {

@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.util.exception.ErrorType;
-import web.MessageUtil;
+import votingsystem.menuvote.web.MessageUtil;
 
 import javax.annotation.PostConstruct;
 

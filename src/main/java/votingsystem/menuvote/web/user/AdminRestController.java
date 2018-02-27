@@ -1,4 +1,4 @@
-package web.user;
+package votingsystem.menuvote.web.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

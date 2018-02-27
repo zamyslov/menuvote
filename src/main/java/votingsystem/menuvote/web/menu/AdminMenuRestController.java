@@ -1,4 +1,4 @@
-package web.menu;
+package votingsystem.menuvote.web.menu;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class AdminMenuRestController {
         service.update(menu);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") int id) {
         log.info("delete {}", id);

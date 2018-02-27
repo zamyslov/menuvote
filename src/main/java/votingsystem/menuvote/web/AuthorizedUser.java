@@ -1,4 +1,4 @@
-package web;
+package votingsystem.menuvote.web;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
