@@ -55,7 +55,7 @@ abstract public class AbstractControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
-//                .addFilters(filterChainProxy)
+                .addFilters(filterChainProxy)
                 .build();
     }
 

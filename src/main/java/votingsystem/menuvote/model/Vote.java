@@ -1,5 +1,6 @@
 package votingsystem.menuvote.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -13,10 +14,12 @@ public class Vote extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference(value = "votes")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "menu_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference(value = "menu")
     private Menu menu;
 
     @Column(name = "date", columnDefinition = "date default now()")

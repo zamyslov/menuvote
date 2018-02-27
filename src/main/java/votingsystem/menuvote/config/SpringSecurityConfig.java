@@ -28,9 +28,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/register").anonymous()
-                .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").authenticated()
                 .anyRequest().authenticated()
+                .and()
+                .httpBasic()
                 .and()
                 .formLogin();
 //                .loginPage("/login").failureUrl("/login?error=true");
