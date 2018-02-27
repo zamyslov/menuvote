@@ -113,6 +113,14 @@ public class User extends AbstractNamedEntity {
         return votes;
     }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

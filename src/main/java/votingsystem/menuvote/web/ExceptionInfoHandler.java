@@ -34,13 +34,11 @@ public class ExceptionInfoHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.user.duplicateEmail";
-    public static final String EXCEPTION_DUPLICATE_DATETIME = "exception.meal.duplicateDateTime";
 
     private static final Map<String, String> CONSTRAINS_I18N_MAP = Collections.unmodifiableMap(
             new HashMap<String, String>() {
                 {
                     put("users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL);
-                    put("meals_unique_user_datetime_idx", EXCEPTION_DUPLICATE_DATETIME);
                 }
             });
 
