@@ -142,23 +142,11 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
         return builder;
     }
 
-    //    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
-//                .indentOutput(true)
-//                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-//        List<MediaType> list = new ArrayList<>();
-//        list.add(MediaType.TEXT_PLAIN);
-//        list.add(MediaType.TEXT_HTML);
-//        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
-//        stringHttpMessageConverter.setSupportedMediaTypes(list);
-//        converters.add(new MappingJackson2HttpMessageConverter());
-//        converters.add(stringHttpMessageConverter);
-//    }
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
-        converters.add(new MappingJackson2HttpMessageConverter());
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        builder.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
         super.configureMessageConverters(converters);
     }
 
@@ -190,5 +178,4 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
                 mediaType("text/html", MediaType.TEXT_HTML).
                 mediaType("json", MediaType.APPLICATION_JSON);
     }
-
 }

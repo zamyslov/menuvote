@@ -14,19 +14,19 @@ public class ProfileRestController extends AbstractUserController {
     static final String REST_URL = "/rest/profile";
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public User get(AuthorizedUser authorizedUser) {
-        return super.get(authorizedUser.getId());
+    public User get() {
+        return super.get(AuthorizedUser.get().getId());
     }
 
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(AuthorizedUser authorizedUser) {
-        super.delete(authorizedUser.getId());
+    public void delete() {
+        super.delete(AuthorizedUser.get().getId());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@Valid @RequestBody User user, AuthorizedUser authorizedUser) {
-        super.update(user, authorizedUser.getId());
+    public void update(@Valid @RequestBody User user) {
+        super.update(user, AuthorizedUser.get().getId());
     }
 
 }
