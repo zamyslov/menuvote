@@ -1,5 +1,10 @@
 package votingsystem.menuvote.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,25 +19,34 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import votingsystem.menuvote.MenuVoteApplication;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Configuration
 @Import({SpringSecurityConfig.class})
 @ComponentScan(basePackages = {"votingsystem.menuvote"})
 @EnableTransactionManagement
+@EnableWebMvc
 @EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class, entityManagerFactoryRef = "configureEntityManagerFactory", transactionManagerRef = "transactionManager")
-public class JpaConfig implements TransactionManagementConfigurer {
+public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionManagementConfigurer {
 
     @Value("${spring.datasource.driverClassName}")
     private String driver;
@@ -103,4 +117,78 @@ public class JpaConfig implements TransactionManagementConfigurer {
         messageSource.setCacheSeconds(10); //reload messages every 10 seconds
         return messageSource;
     }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setObjectMapper(this.jacksonBuilder().build());
+
+        return converter;
+    }
+
+    public Jackson2ObjectMapperBuilder jacksonBuilder() {
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+
+        Hibernate5Module hibernateModule = new Hibernate5Module();
+
+        hibernateModule.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, false);
+
+        builder.modules(hibernateModule);
+
+        // Spring MVC default Objectmapper configuration
+        builder.featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        builder.featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION);
+
+        return builder;
+    }
+
+    //    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
+//                .indentOutput(true)
+//                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+//        List<MediaType> list = new ArrayList<>();
+//        list.add(MediaType.TEXT_PLAIN);
+//        list.add(MediaType.TEXT_HTML);
+//        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
+//        stringHttpMessageConverter.setSupportedMediaTypes(list);
+//        converters.add(new MappingJackson2HttpMessageConverter());
+//        converters.add(stringHttpMessageConverter);
+//    }
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+        converters.add(new MappingJackson2HttpMessageConverter());
+        super.configureMessageConverters(converters);
+    }
+
+    //configure the output json format
+//https://stackoverflow.com/questions/4823358/spring-configure-responsebody-json-format
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter<?> converter : converters) {
+            if (converter instanceof AbstractJackson2HttpMessageConverter) {
+                AbstractJackson2HttpMessageConverter c = (AbstractJackson2HttpMessageConverter) converter;
+                ObjectMapper objectMapper = c.getObjectMapper();
+                objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+            }
+        }
+
+        super.extendMessageConverters(converters);
+    }
+
+    @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        configurer.favorPathExtension(true).
+                favorParameter(false).
+                parameterName("mediaType").
+//                ignoreAcceptHeader(true).
+        useJaf(false).
+                defaultContentType(MediaType.APPLICATION_JSON).
+                mediaType("xml", MediaType.APPLICATION_XML).
+                mediaType("text/plain", MediaType.TEXT_PLAIN).
+                mediaType("text/html", MediaType.TEXT_HTML).
+                mediaType("json", MediaType.APPLICATION_JSON);
+    }
+
 }

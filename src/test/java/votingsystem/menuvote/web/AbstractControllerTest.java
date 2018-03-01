@@ -48,6 +48,7 @@ abstract public class AbstractControllerTest {
     @Autowired
     private FilterChainProxy filterChainProxy;
 
+    @Autowired
     protected MessageUtil messageUtil;
 
     @PostConstruct

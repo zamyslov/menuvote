@@ -26,6 +26,7 @@ public class UserTestData {
     public static final User USER2 = new User(USER2_ID, "User2", "user2@yandex.ru", "$2a$10$DLVDKA7WrLvKwdcQy5HdjepOy74gIGQlkh159EqEys3bOtUE3aOHK", Role.ROLE_USER);
     public static final User USER3 = new User(USER3_ID, "User3", "user3@yandex.ru", "$2a$10$DLVDKA7WrLvKwdcQy5HdjepOy74gIGQlkh159EqEys3bOtUE3aOHK", Role.ROLE_USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "$2a$10$TjHDJyLWPR5umEHZs4Vame7V98jz4FJvvk63uOXm6YF0s4PeJMCjy", Role.ROLE_ADMIN);
+    public static final User USER_AUTH = new User(USER_ID, "User", "user@yandex.ru", "password", Role.ROLE_USER);
     public static final User ADMIN_AUTH = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ROLE_ADMIN);
 
     public static void assertMatch(User actual, User expected) {

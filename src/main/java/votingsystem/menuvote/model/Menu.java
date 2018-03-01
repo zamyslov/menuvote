@@ -1,5 +1,6 @@
 package votingsystem.menuvote.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -33,6 +34,8 @@ public class Menu extends AbstractBaseEntity {
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
     @OrderBy("date DESC")
+    @JsonManagedReference(value = "menu")
+
     private Set<Vote> votes;
 
     public Menu() {

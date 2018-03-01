@@ -9,7 +9,7 @@ DELETE FROM votes;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO users (name, email, password) VALUES
-  ('User', 'user@yandex.ru', 'password'), --100000
+  ('User', 'user@yandex.ru', '$2a$10$DLVDKA7WrLvKwdcQy5HdjepOy74gIGQlkh159EqEys3bOtUE3aOHK'), --100000
   ('User1', 'user1@yandex.ru', 'password'), --100001
   ('User2', 'user2@yandex.ru', 'password'), --100002
   ('User3', 'user3@yandex.ru', 'password'), --100003

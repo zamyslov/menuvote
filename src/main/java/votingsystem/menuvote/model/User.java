@@ -1,5 +1,6 @@
 package votingsystem.menuvote.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -15,6 +16,7 @@ import java.util.*;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "users")
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends AbstractNamedEntity {
 
@@ -66,7 +68,7 @@ public class User extends AbstractNamedEntity {
         this.password = password;
         this.enabled = enabled;
         this.registered = registered;
-        setRoles(roles);
+        setRoles(CollectionUtils.isEmpty(roles) ? Collections.emptySet() : EnumSet.copyOf(roles));
     }
 
     public String getEmail() {
@@ -105,16 +107,16 @@ public class User extends AbstractNamedEntity {
         return password;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? Collections.emptySet() : EnumSet.copyOf(roles);
+//    public void setRoles(Collection<Role> roles) {
+//        this.roles = CollectionUtils.isEmpty(roles) ? Collections.emptySet() : EnumSet.copyOf(roles);
+//    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public List<Vote> getVotes() {
         return votes;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public void setVotes(List<Vote> votes) {

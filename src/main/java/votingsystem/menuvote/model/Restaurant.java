@@ -44,6 +44,10 @@ public class Restaurant extends AbstractNamedEntity {
         return menus;
     }
 
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

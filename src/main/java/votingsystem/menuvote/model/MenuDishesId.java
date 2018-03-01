@@ -2,7 +2,6 @@ package votingsystem.menuvote.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,12 +15,30 @@ public class MenuDishesId implements Serializable {
 
 
     public MenuDishesId() {
+
     }
 
     public MenuDishesId(int menu_id, int dish_id) {
         this.menu_id = menu_id;
         this.dish_id = dish_id;
     }
+
+    public int getMenu_id() {
+        return menu_id;
+    }
+
+    public void setMenu_id(int menu_id) {
+        this.menu_id = menu_id;
+    }
+
+    public int getDish_id() {
+        return dish_id;
+    }
+
+    public void setDish_id(int dish_id) {
+        this.dish_id = dish_id;
+    }
+
 
     @Override
     public boolean equals(Object o) {

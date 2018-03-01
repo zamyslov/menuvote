@@ -1,7 +1,10 @@
 package votingsystem.menuvote.web.user;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,21 +14,20 @@ import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.util.exception.ErrorType;
 import votingsystem.menuvote.web.AbstractControllerTest;
 import votingsystem.menuvote.web.json.JsonUtil;
-import votingsystem.menuvote.web.user.AdminRestController;
 
 import java.util.Collections;
+import java.util.EnumSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static votingsystem.menuvote.TestUtil.userHttpBasic;
-import static votingsystem.menuvote.service.UserTestData.ADMIN;
-import static votingsystem.menuvote.service.UserTestData.ADMIN_ID;
 import static votingsystem.menuvote.service.UserTestData.*;
 import static votingsystem.menuvote.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
-
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class AdminRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminRestController.REST_URL + '/';
@@ -35,7 +37,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_URL + ADMIN_ID)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andExpect(status().isOk())
-                //.andDo(print())
+                .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(ADMIN));
@@ -84,7 +86,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     public void testGetForbidden() throws Exception {
         mockMvc.perform(get(REST_URL)
-                .with(userHttpBasic(USER)))
+                .with(userHttpBasic(USER_AUTH)))
                 .andExpect(status().isForbidden());
     }
 
@@ -92,7 +94,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
-        updated.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
+        updated.setRoles(EnumSet.copyOf(Collections.singletonList(Role.ROLE_ADMIN)));
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
@@ -104,7 +106,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        User expected = new User(null, "New", "new@gmail.com", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        User expected = new User(null, "New", "new@gmail.com", "newPass", Role.ROLE_USER);
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
@@ -130,12 +132,11 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     public void testCreateInvalid() throws Exception {
         User expected = new User(null, null, "", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
-        ResultActions action = mockMvc.perform(post(REST_URL)
+        mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 
@@ -147,9 +148,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print())
-                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 

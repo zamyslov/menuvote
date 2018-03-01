@@ -11,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import votingsystem.menuvote.util.ValidationUtil;
 import votingsystem.menuvote.util.exception.ApplicationException;
 import votingsystem.menuvote.util.exception.ErrorInfo;
@@ -30,7 +28,7 @@ import static votingsystem.menuvote.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
-public class ExceptionInfoHandler {
+public class ExceptionInfoHandler extends ResponseEntityExceptionHandler {
     private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.user.duplicateEmail";
@@ -53,7 +51,7 @@ public class ExceptionInfoHandler {
 
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
+    public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         String rootMsg = ValidationUtil.getRootCause(e).getMessage();
         if (rootMsg != null) {
             String lowerCaseMsg = rootMsg.toLowerCase();
@@ -61,24 +59,27 @@ public class ExceptionInfoHandler {
                     .filter(it -> lowerCaseMsg.contains(it.getKey()))
                     .findAny();
             if (entry.isPresent()) {
-                return logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue()));
+//                return logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue()));
+                return new ResponseEntity<>(logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue())), HttpStatus.CONFLICT);
             }
         }
-        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+//        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+//        ErrorInfo errorInfo = logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue()));
+        return new ResponseEntity<>(logAndGetErrorInfo(req, e, true, DATA_ERROR), HttpStatus.CONFLICT);
     }
 
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
-    @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class})
-    public ErrorInfo bindValidationError(HttpServletRequest req, Exception e) {
-        BindingResult result = e instanceof BindException ?
-                ((BindException) e).getBindingResult() : ((MethodArgumentNotValidException) e).getBindingResult();
-
-        String[] details = result.getFieldErrors().stream()
-                .map(fe -> messageUtil.getMessage(fe))
-                .toArray(String[]::new);
-
-        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
-    }
+//    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
+//    @ExceptionHandler({BindException.class})
+//    public ErrorInfo bindValidationError(HttpServletRequest req, Exception e) {
+//        BindingResult result = e instanceof BindException ?
+//                ((BindException) e).getBindingResult() : ((MethodArgumentNotValidException) e).getBindingResult();
+//
+//        String[] details = result.getFieldErrors().stream()
+//                .map(fe -> messageUtil.getMessage(fe))
+//                .toArray(String[]::new);
+//
+//        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
+//    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
