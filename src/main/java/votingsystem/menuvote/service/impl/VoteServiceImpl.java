@@ -7,7 +7,7 @@ import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.repository.VoteRepository;
 import votingsystem.menuvote.service.VoteService;
-import votingsystem.menuvote.util.exception.NotFoundException;
+import votingsystem.menuvote.util.exception.ClosedPeriodException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,14 +32,14 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Vote create(Vote vote) {
+    public Vote create(Vote vote) throws ClosedPeriodException {
         Assert.notNull(vote, "vote must not be null");
         checkVoteForTime(LocalDateTime.now());
         return repository.save(vote);
     }
 
     @Override
-    public void delete(LocalDate date, int user_id) throws NotFoundException {
+    public void delete(LocalDate date, int user_id) throws ClosedPeriodException {
         checkVoteForTime(LocalDateTime.now());
         checkNotFound(repository.delete(date, user_id), "date:" + date + "user:" + user_id);
     }

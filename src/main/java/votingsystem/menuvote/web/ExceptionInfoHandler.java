@@ -8,13 +8,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import votingsystem.menuvote.util.ValidationUtil;
 import votingsystem.menuvote.util.exception.ApplicationException;
+import votingsystem.menuvote.util.exception.ClosedPeriodException;
 import votingsystem.menuvote.util.exception.ErrorInfo;
 import votingsystem.menuvote.util.exception.ErrorType;
 
@@ -24,7 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static votingsystem.menuvote.util.exception.ErrorType.*;
+import static votingsystem.menuvote.util.exception.ErrorType.APP_ERROR;
+import static votingsystem.menuvote.util.exception.ErrorType.DATA_ERROR;
 
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
@@ -49,6 +51,12 @@ public class ExceptionInfoHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorInfo, appEx.getHttpStatus());
     }
 
+    @ExceptionHandler(ClosedPeriodException.class)
+    public ResponseEntity<ErrorInfo> periodError(HttpServletRequest req, ApplicationException appEx) {
+        ErrorInfo errorInfo = logAndGetErrorInfo(req, appEx, false, appEx.getType(), messageUtil.getMessage(appEx));
+        return new ResponseEntity<>(errorInfo, appEx.getHttpStatus());
+    }
+
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, DataIntegrityViolationException e) {
@@ -59,27 +67,11 @@ public class ExceptionInfoHandler extends ResponseEntityExceptionHandler {
                     .filter(it -> lowerCaseMsg.contains(it.getKey()))
                     .findAny();
             if (entry.isPresent()) {
-//                return logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue()));
                 return new ResponseEntity<>(logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue())), HttpStatus.CONFLICT);
             }
         }
-//        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
-//        ErrorInfo errorInfo = logAndGetErrorInfo(req, e, false, DATA_ERROR, messageUtil.getMessage(entry.get().getValue()));
         return new ResponseEntity<>(logAndGetErrorInfo(req, e, true, DATA_ERROR), HttpStatus.CONFLICT);
     }
-
-//    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
-//    @ExceptionHandler({BindException.class})
-//    public ErrorInfo bindValidationError(HttpServletRequest req, Exception e) {
-//        BindingResult result = e instanceof BindException ?
-//                ((BindException) e).getBindingResult() : ((MethodArgumentNotValidException) e).getBindingResult();
-//
-//        String[] details = result.getFieldErrors().stream()
-//                .map(fe -> messageUtil.getMessage(fe))
-//                .toArray(String[]::new);
-//
-//        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
-//    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)

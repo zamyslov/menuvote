@@ -1,5 +1,6 @@
 package votingsystem.menuvote.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class MenuDishes {
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "menu_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference(value = "menuDishes")
     @MapsId("menu_id")
     private Menu menu;
 

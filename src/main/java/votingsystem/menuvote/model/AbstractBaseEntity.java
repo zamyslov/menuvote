@@ -1,5 +1,6 @@
 package votingsystem.menuvote.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractBaseEntity implements Persistable<Integer> {
     public static final String START_SEQ = "100000";
 
