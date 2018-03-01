@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+import votingsystem.menuvote.TestUtil;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.util.VoteUtil;
 import votingsystem.menuvote.web.AbstractControllerTest;
@@ -12,16 +13,15 @@ import votingsystem.menuvote.web.json.JsonUtil;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static votingsystem.menuvote.TestUtil.readFromJson;
-import static votingsystem.menuvote.TestUtil.userHttpBasic;
+import static votingsystem.menuvote.TestUtil.*;
 import static votingsystem.menuvote.service.MenuTestData.MENU1;
 import static votingsystem.menuvote.service.MenuTestData.MENU2;
-import static votingsystem.menuvote.service.UserTestData.USER;
-import static votingsystem.menuvote.service.UserTestData.USER_AUTH;
+import static votingsystem.menuvote.service.UserTestData.*;
 import static votingsystem.menuvote.service.VoteTestData.*;
+import static votingsystem.menuvote.service.VoteTestData.assertMatch;
 import static votingsystem.menuvote.web.vote.VoteRestController.REST_URL;
 
 @Transactional
@@ -97,4 +97,14 @@ public class VoteRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(MENU1)))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    public void testGetAll() throws Exception {
+        TestUtil.print(mockMvc.perform(get(REST_URL)
+                .with(userHttpBasic(ADMIN_AUTH)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJsonArray(VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6)));
+    }
+
 }

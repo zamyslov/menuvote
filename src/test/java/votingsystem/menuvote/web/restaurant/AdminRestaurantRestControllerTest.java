@@ -1,4 +1,4 @@
-package votingsystem.menuvote.web.user;
+package votingsystem.menuvote.web.restaurant;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,64 +9,37 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import votingsystem.menuvote.TestUtil;
-import votingsystem.menuvote.model.Role;
-import votingsystem.menuvote.model.User;
+import votingsystem.menuvote.model.Restaurant;
 import votingsystem.menuvote.util.exception.ErrorType;
 import votingsystem.menuvote.web.AbstractControllerTest;
 import votingsystem.menuvote.web.json.JsonUtil;
 
 import java.util.Collections;
-import java.util.EnumSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static votingsystem.menuvote.TestUtil.contentJsonArray;
 import static votingsystem.menuvote.TestUtil.userHttpBasic;
-import static votingsystem.menuvote.service.UserTestData.*;
+import static votingsystem.menuvote.service.RestaurantTestData.*;
+import static votingsystem.menuvote.service.UserTestData.ADMIN_AUTH;
+import static votingsystem.menuvote.service.UserTestData.USER_AUTH;
 import static votingsystem.menuvote.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class AdminRestControllerTest extends AbstractControllerTest {
+public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = AdminRestController.REST_URL + '/';
-
-    @Test
-    public void testGet() throws Exception {
-        mockMvc.perform(get(REST_URL + ADMIN_ID)
-                .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                // https://jira.spring.io/browse/SPR-14472
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(ADMIN));
-    }
-
-    @Test
-    public void testGetNotFound() throws Exception {
-        mockMvc.perform(get(REST_URL + 1)
-                .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
-    }
-
-    @Test
-    public void testGetByEmail() throws Exception {
-        mockMvc.perform(get(REST_URL + "by?email=" + ADMIN.getEmail())
-                .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(ADMIN));
-    }
+    private static final String REST_URL = AdminRestaurantRestController.REST_URL + '/';
 
     @Test
     public void testDelete() throws Exception {
-        mockMvc.perform(delete(REST_URL + USER_ID)
+        mockMvc.perform(delete(REST_URL + RES1_ID)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertMatch(userService.getAll(), ADMIN, USER1, USER2, USER3);
+        assertMatch(restaurantService.getAll(), Collections.singletonList(RES2));
     }
 
     @Test
@@ -92,32 +65,31 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testUpdate() throws Exception {
-        User updated = new User(USER);
+        Restaurant updated = new Restaurant(RES1);
         updated.setName("UpdatedName");
-        updated.setRoles(EnumSet.copyOf(Collections.singletonList(Role.ROLE_ADMIN)));
-        mockMvc.perform(put(REST_URL + USER_ID)
+        mockMvc.perform(put(REST_URL + RES1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
-                .content(jsonWithPassword(updated, USER.getPassword())))
+                .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
 
-        assertMatch(userService.get(USER_ID), updated);
+        assertMatch(restaurantService.get(RES1_ID), updated);
     }
 
     @Test
     public void testCreate() throws Exception {
-        User expected = new User(null, "New", "new@gmail.com", "newPass", Role.ROLE_USER);
+        Restaurant expected = new Restaurant(null, "New restaurant", "new address");
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
-                .content(jsonWithPassword(expected, "newPass")))
+                .content(JsonUtil.writeValue(expected)))
                 .andExpect(status().isCreated());
 
-        User returned = TestUtil.readFromJson(action, User.class);
+        Restaurant returned = TestUtil.readFromJson(action, Restaurant.class);
         expected.setId(returned.getId());
 
         assertMatch(returned, expected);
-        assertMatch(userService.getAll(), ADMIN, expected, USER, USER1, USER2, USER3);
+        assertMatch(restaurantService.getAll(), RES1, RES2, expected);
     }
 
     @Test
@@ -126,12 +98,12 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(ADMIN, USER, USER1, USER2, USER3)));
+                .andExpect(contentJsonArray(RES1, RES2)));
     }
 
     @Test
     public void testCreateInvalid() throws Exception {
-        User expected = new User(null, null, "", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        Restaurant expected = new Restaurant(null, null, "newPass");
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
@@ -142,9 +114,9 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testUpdateInvalid() throws Exception {
-        User updated = new User(USER);
+        Restaurant updated = new Restaurant(RES1);
         updated.setName("");
-        mockMvc.perform(put(REST_URL + USER_ID)
+        mockMvc.perform(put(REST_URL + RES1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
@@ -155,12 +127,12 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testUpdateDuplicate() throws Exception {
-        User updated = new User(USER);
-        updated.setEmail("admin@gmail.com");
-        mockMvc.perform(put(REST_URL + USER_ID)
+        Restaurant updated = new Restaurant(RES1);
+        updated.setName("Restaurant2");
+        mockMvc.perform(put(REST_URL + RES1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
-                .content(jsonWithPassword(updated, "password")))
+                .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isConflict())
                 .andExpect(errorType(ErrorType.DATA_ERROR))
                 .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
@@ -170,11 +142,11 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testCreateDuplicate() throws Exception {
-        User expected = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        Restaurant expected = new Restaurant(null, "New", "user@yandex.ru");
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
-                .content(jsonWithPassword(expected, "newPass")))
+                .content(JsonUtil.writeValue(expected)))
                 .andExpect(status().isConflict())
                 .andExpect(errorType(ErrorType.DATA_ERROR))
                 .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL));

@@ -19,7 +19,7 @@ import static votingsystem.menuvote.service.UserTestData.*;
 import static votingsystem.menuvote.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 import static votingsystem.menuvote.web.user.ProfileRestController.REST_URL;
 
-public class ProfileRestControllerTest extends AbstractControllerTest {
+public class ProfileUserRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGet() throws Exception {
