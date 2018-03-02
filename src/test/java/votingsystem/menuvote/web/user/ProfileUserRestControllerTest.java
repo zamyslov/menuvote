@@ -1,7 +1,10 @@
 package votingsystem.menuvote.web.user;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import votingsystem.menuvote.model.Role;
@@ -19,6 +22,8 @@ import static votingsystem.menuvote.service.UserTestData.*;
 import static votingsystem.menuvote.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 import static votingsystem.menuvote.web.user.ProfileRestController.REST_URL;
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class ProfileUserRestControllerTest extends AbstractControllerTest {
 
     @Test
@@ -48,7 +53,6 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setEmail("newemail@ya.ru");
-
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER_AUTH))
                 .content(JsonUtil.writeValue(updated)))
@@ -61,7 +65,6 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
     @Test
     public void testUpdateInvalid() throws Exception {
         User updatedTo = new User(null, null, "password", null, Role.ROLE_USER);
-
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER_AUTH))
                 .content(JsonUtil.writeValue(updatedTo)))
@@ -74,7 +77,6 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     public void testDuplicate() throws Exception {
         User updatedTo = new User(null, "newName", "admin@gmail.com", "newPassword", Role.ROLE_USER);
-
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER_AUTH))
                 .content(JsonUtil.writeValue(updatedTo)))
