@@ -24,6 +24,6 @@ public class RestaurantTestData {
     }
 
     public static void assertMatch(Iterable<Restaurant> actual, Iterable<Restaurant> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("menus").isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 }

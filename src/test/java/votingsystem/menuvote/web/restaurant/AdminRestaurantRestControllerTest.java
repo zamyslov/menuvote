@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import votingsystem.menuvote.TestUtil;
 import votingsystem.menuvote.model.Restaurant;
-import votingsystem.menuvote.util.exception.ErrorType;
 import votingsystem.menuvote.web.AbstractControllerTest;
 import votingsystem.menuvote.web.json.JsonUtil;
 
@@ -25,7 +24,6 @@ import static votingsystem.menuvote.TestUtil.userHttpBasic;
 import static votingsystem.menuvote.service.RestaurantTestData.*;
 import static votingsystem.menuvote.service.UserTestData.ADMIN_AUTH;
 import static votingsystem.menuvote.service.UserTestData.USER_AUTH;
-import static votingsystem.menuvote.web.ExceptionInfoHandler.EXCEPTION_DUPLICATE_EMAIL;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -67,7 +65,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     public void testUpdate() throws Exception {
         Restaurant updated = new Restaurant(RES1);
         updated.setName("UpdatedName");
-        mockMvc.perform(put(REST_URL + RES1_ID)
+        mockMvc.perform(put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
@@ -116,7 +114,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     public void testUpdateInvalid() throws Exception {
         Restaurant updated = new Restaurant(RES1);
         updated.setName("");
-        mockMvc.perform(put(REST_URL + RES1_ID)
+        mockMvc.perform(put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
@@ -129,27 +127,23 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     public void testUpdateDuplicate() throws Exception {
         Restaurant updated = new Restaurant(RES1);
         updated.setName("Restaurant2");
-        mockMvc.perform(put(REST_URL + RES1_ID)
+        mockMvc.perform(put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isConflict())
-                .andExpect(errorType(ErrorType.DATA_ERROR))
-                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
                 .andDo(print());
     }
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testCreateDuplicate() throws Exception {
-        Restaurant expected = new Restaurant(null, "New", "user@yandex.ru");
+        Restaurant expected = new Restaurant(null, "Restaurant1", "new address");
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isConflict())
-                .andExpect(errorType(ErrorType.DATA_ERROR))
-                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL));
+                .andExpect(status().isConflict());
 
     }
 }

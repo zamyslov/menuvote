@@ -37,6 +37,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import votingsystem.menuvote.MenuVoteApplication;
 
 import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -146,7 +147,9 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(builder.build());
+        converter.setDefaultCharset(StandardCharsets.UTF_8);
+        converters.add(converter);
         super.configureMessageConverters(converters);
     }
 
@@ -161,7 +164,6 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
                 objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
             }
         }
-
         super.extendMessageConverters(converters);
     }
 

@@ -2,9 +2,11 @@ package votingsystem.menuvote.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,10 +17,6 @@ public class Restaurant extends AbstractNamedEntity {
     @NotBlank
     @Size(min = 5, max = 150)
     private String address;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("date DESC")
-    private List<Menu> menus;
 
     public Restaurant(Restaurant u) {
         this(u.getId(), u.getName(), u.getAddress());
@@ -38,14 +36,6 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<Menu> getMenus() {
-        return menus;
-    }
-
-    public void setMenus(List<Menu> menus) {
-        this.menus = menus;
     }
 
     @Override
