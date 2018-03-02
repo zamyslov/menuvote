@@ -14,6 +14,7 @@ import votingsystem.menuvote.model.MenuDishes;
 import votingsystem.menuvote.service.MenuService;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(AdminMenuRestController.REST_URL)
@@ -23,6 +24,12 @@ public class AdminMenuRestController {
 
     @Autowired
     private MenuService service;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Menu> getAll() {
+        log.info("getAll");
+        return service.getAll();
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> create(@Validated @RequestBody Menu menu) {
@@ -43,7 +50,7 @@ public class AdminMenuRestController {
 
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") int id) {
+    public void delete(@Validated @RequestBody int id) {
         log.info("delete {}", id);
         service.delete(id);
     }

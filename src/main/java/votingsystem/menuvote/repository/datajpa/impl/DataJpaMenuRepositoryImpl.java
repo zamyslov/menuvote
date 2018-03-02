@@ -35,4 +35,10 @@ public class DataJpaMenuRepositoryImpl implements MenuRepository {
     public List<Menu> getBetween(LocalDate startDate, LocalDate endDate) {
         return crudRepository.getBetween(startDate, endDate);
     }
+
+    @Override
+    public List<Menu> getAll() {
+        return crudRepository.getAll();
+    }
+
 }

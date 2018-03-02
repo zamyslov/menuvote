@@ -25,6 +25,6 @@ public interface MenuService {
 
     void addMenuDish(int menu_id, int dish_id, double price);
 
-
+    List<Menu> getAll();
 
 }

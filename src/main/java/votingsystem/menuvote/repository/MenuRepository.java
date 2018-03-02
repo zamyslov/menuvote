@@ -16,4 +16,6 @@ public interface MenuRepository {
 
     List<Menu> getBetween(LocalDate startDate, LocalDate endDate);
 
+    List<Menu> getAll();
+
 }
