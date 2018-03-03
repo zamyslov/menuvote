@@ -1,6 +1,7 @@
 package votingsystem.menuvote.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class MenuDishes {
     @EmbeddedId
     private MenuDishesId id = new MenuDishesId();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "menu_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference(value = "menuDishes")
     @MapsId("menu_id")
@@ -25,7 +26,7 @@ public class MenuDishes {
     @NotNull
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "dish_id", referencedColumnName = "id", nullable = false)
     @MapsId("dish_id")
     private Dish dish;

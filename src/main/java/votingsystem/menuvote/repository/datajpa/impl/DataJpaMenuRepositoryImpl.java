@@ -38,7 +38,7 @@ public class DataJpaMenuRepositoryImpl implements MenuRepository {
 
     @Override
     public List<Menu> getAll() {
-        return crudRepository.getAll();
+        return crudRepository.findAll();
     }
 
 }

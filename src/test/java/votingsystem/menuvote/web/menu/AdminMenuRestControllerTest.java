@@ -19,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static votingsystem.menuvote.TestUtil.contentJsonArray;
 import static votingsystem.menuvote.TestUtil.userHttpBasic;
+import static votingsystem.menuvote.service.MenuDishesTestData.MENUDISH2;
+import static votingsystem.menuvote.service.MenuDishesTestData.MENUDISH3;
 import static votingsystem.menuvote.service.MenuTestData.*;
 import static votingsystem.menuvote.service.RestaurantTestData.RES1;
 import static votingsystem.menuvote.service.RestaurantTestData.RES2;
@@ -33,6 +35,7 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
     @Test
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(MENU1_ID)))
                 .andExpect(status().isNoContent());
@@ -42,9 +45,10 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
     @Test
     public void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
-                .content(JsonUtil.writeValue(MENU1_ID)))
-                .andExpect(status().isBadRequest())
+                .content(JsonUtil.writeValue(MENU1_ID + 10)))
+                .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
     }
 
@@ -92,11 +96,16 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetAll() throws Exception {
+        MENU1.getMenuDishes().add(MENUDISH3);
+        MENU1.getMenuDishes().remove(MENUDISH2);
+
+
         TestUtil.print(mockMvc.perform(get(REST_URL)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isOk())
+//                .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJsonArray(MENU1, MENU2, MENU3, MENU4)));
+                .andExpect(contentJsonArray(MENU1, MENU2, MENU3, MENU4)))
+                .andDo(print());
     }
 
     @Test
@@ -137,12 +146,40 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
     @Test
     public void testCreateDuplicate() throws Exception {
         Menu expected = new Menu(MENU1);
+        expected.setRestaurant(RES2);
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(expected)))
                 .andExpect(status().isConflict());
-
     }
 
+    @Test
+    public void testAddDish() throws Exception {
+        Menu expected = new Menu(MENU1);
+        expected.setMenuDishes(MENU1.getMenuDishes());
+        expected.getMenuDishes().add(MENUDISH3);
+        ResultActions action = mockMvc.perform(post(REST_URL + MENU1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN_AUTH))
+                .content(JsonUtil.writeValue(MENUDISH3)))
+                .andExpect(status().isCreated());
+
+        Menu returned = TestUtil.readFromJson(action, Menu.class);
+        assertMatch(returned, expected);
+    }
+
+    @Test
+    public void testDeleteDish() throws Exception {
+        Menu expected = new Menu(MENU1);
+        expected.setMenuDishes(MENU1.getMenuDishes());
+        expected.getMenuDishes().remove(MENUDISH2);
+        mockMvc.perform(delete(REST_URL + MENU1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN_AUTH))
+                .content(JsonUtil.writeValue(MENUDISH2)))
+                .andExpect(status().isNoContent());
+
+        assertMatch(menuService.get(MENU1_ID), expected);
+    }
 }

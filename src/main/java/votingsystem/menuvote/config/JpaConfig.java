@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -162,6 +163,7 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
                 AbstractJackson2HttpMessageConverter c = (AbstractJackson2HttpMessageConverter) converter;
                 ObjectMapper objectMapper = c.getObjectMapper();
                 objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+                objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
             }
         }
         super.extendMessageConverters(converters);
