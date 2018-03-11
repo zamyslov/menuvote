@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import votingsystem.menuvote.TestUtil;
 import votingsystem.menuvote.model.Vote;
 import votingsystem.menuvote.util.VoteUtil;
 import votingsystem.menuvote.web.AbstractControllerTest;
@@ -102,14 +101,4 @@ public class VoteRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(MENU1)))
                 .andExpect(status().isUnauthorized());
     }
-
-    @Test
-    public void testGetAll() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL)
-                .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJsonArray(VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6)));
-    }
-
 }

@@ -39,11 +39,11 @@ public class UserRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetAll() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL)
+        mockMvc.perform(get(REST_URL)
                 .with(userHttpBasic(USER_AUTH)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJsonArray(RES1, RES2)));
+                .andExpect(contentJsonArray(RES1, RES2));
     }
 
 }

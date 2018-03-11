@@ -13,6 +13,8 @@ import votingsystem.menuvote.util.exception.ErrorType;
 import votingsystem.menuvote.web.AbstractControllerTest;
 import votingsystem.menuvote.web.json.JsonUtil;
 
+import java.util.Collections;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,6 +34,7 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER_AUTH)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+//                .andDo(print());
                 .andExpect(contentJson(USER));
     }
 
@@ -53,10 +56,10 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setEmail("newemail@ya.ru");
+        updated.setRoles(Collections.emptySet());
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andDo(print())
                 .andExpect(status().isOk());
 
         assertMatch(userService.getByEmail("newemail@ya.ru"), updated);
@@ -64,25 +67,22 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testUpdateInvalid() throws Exception {
-        User updatedTo = new User(null, null, "password", null, Role.ROLE_USER);
+        User updated = new User(null, null, "password", null, Role.ROLE_USER);
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER_AUTH))
-                .content(JsonUtil.writeValue(updatedTo)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testDuplicate() throws Exception {
-        User updatedTo = new User(null, "newName", "admin@gmail.com", "newPassword", Role.ROLE_USER);
+        User updated = new User(null, "newName", "admin@gmail.com", "newPassword", Role.ROLE_USER);
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(USER_AUTH))
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isConflict())
                 .andExpect(errorType(ErrorType.DATA_ERROR))
-                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL))
-                .andDo(print());
+                .andExpect(jsonMessage("$.details", EXCEPTION_DUPLICATE_EMAIL));
     }
 }

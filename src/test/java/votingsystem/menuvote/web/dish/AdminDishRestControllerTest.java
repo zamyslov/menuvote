@@ -12,7 +12,6 @@ import votingsystem.menuvote.web.AbstractControllerTest;
 import votingsystem.menuvote.web.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static votingsystem.menuvote.TestUtil.contentJsonArray;
@@ -30,7 +29,6 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL + DISH1_ID)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andDo(print())
                 .andExpect(status().isNoContent());
         assertMatch(dishService.getAll(), DISH2, DISH3);
     }
@@ -39,8 +37,7 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
     public void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL + 1)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -87,11 +84,11 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetAll() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL)
+        mockMvc.perform(get(REST_URL)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJsonArray(DISH1, DISH2, DISH3)));
+                .andExpect(contentJsonArray(DISH1, DISH2, DISH3));
     }
 
     @Test
@@ -101,8 +98,7 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -113,8 +109,7 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -125,8 +120,7 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isConflict())
-                .andDo(print());
+                .andExpect(status().isConflict());
     }
 
     @Test

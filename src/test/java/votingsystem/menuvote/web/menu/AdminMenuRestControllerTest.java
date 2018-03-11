@@ -8,10 +8,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 import votingsystem.menuvote.TestUtil;
 import votingsystem.menuvote.model.Menu;
+import votingsystem.menuvote.model.MenuDishes;
 import votingsystem.menuvote.web.AbstractControllerTest;
 import votingsystem.menuvote.web.json.JsonUtil;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -19,9 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static votingsystem.menuvote.TestUtil.contentJsonArray;
 import static votingsystem.menuvote.TestUtil.userHttpBasic;
-import static votingsystem.menuvote.service.MenuDishesTestData.MENUDISH2;
-import static votingsystem.menuvote.service.MenuDishesTestData.MENUDISH3;
+import static votingsystem.menuvote.service.MenuDishesTestData.*;
 import static votingsystem.menuvote.service.MenuTestData.*;
+import static votingsystem.menuvote.service.MenuTestData.assertMatch;
 import static votingsystem.menuvote.service.RestaurantTestData.RES1;
 import static votingsystem.menuvote.service.RestaurantTestData.RES2;
 import static votingsystem.menuvote.service.UserTestData.ADMIN_AUTH;
@@ -48,8 +50,7 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(MENU1_ID + 10)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -96,16 +97,11 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetAll() throws Exception {
-        MENU1.getMenuDishes().add(MENUDISH3);
-        MENU1.getMenuDishes().remove(MENUDISH2);
-
-
         TestUtil.print(mockMvc.perform(get(REST_URL)
                 .with(userHttpBasic(ADMIN_AUTH)))
-//                .andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJsonArray(MENU1, MENU2, MENU3, MENU4)))
-                .andDo(print());
+                .andExpect(contentJsonArray(MENU1, MENU2, MENU3, MENU4)));
     }
 
     @Test
@@ -115,8 +111,7 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -127,8 +122,7 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -139,8 +133,7 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isConflict())
-                .andDo(print());
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -157,8 +150,12 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
     @Test
     public void testAddDish() throws Exception {
         Menu expected = new Menu(MENU1);
-        expected.setMenuDishes(MENU1.getMenuDishes());
-        expected.getMenuDishes().add(MENUDISH3);
+        HashSet<MenuDishes> dishesForMenu1 = new HashSet<>();
+        dishesForMenu1.add(MENUDISH1);
+        dishesForMenu1.add(MENUDISH2);
+        dishesForMenu1.add(MENUDISH3);
+        expected.setMenuDishes(dishesForMenu1);
+
         ResultActions action = mockMvc.perform(post(REST_URL + MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
@@ -172,8 +169,9 @@ public class AdminMenuRestControllerTest extends AbstractControllerTest {
     @Test
     public void testDeleteDish() throws Exception {
         Menu expected = new Menu(MENU1);
-        expected.setMenuDishes(MENU1.getMenuDishes());
-        expected.getMenuDishes().remove(MENUDISH2);
+        HashSet<MenuDishes> dishesForMenu1 = new HashSet<>();
+        dishesForMenu1.add(MENUDISH1);
+        expected.setMenuDishes(dishesForMenu1);
         mockMvc.perform(delete(REST_URL + MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))

@@ -18,8 +18,7 @@ public class ProfileRestController extends AbstractUserController {
         return super.get(AuthorizedUser.get().getId());
     }
 
-    @DeleteMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @DeleteMapping  @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete() {
         super.delete(AuthorizedUser.get().getId());
     }

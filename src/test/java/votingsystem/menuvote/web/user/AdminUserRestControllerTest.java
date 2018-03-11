@@ -37,8 +37,6 @@ public class AdminUserRestControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_URL + ADMIN_ID)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andExpect(status().isOk())
-                .andDo(print())
-                // https://jira.spring.io/browse/SPR-14472
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(ADMIN));
     }
@@ -47,8 +45,7 @@ public class AdminUserRestControllerTest extends AbstractControllerTest {
     public void testGetNotFound() throws Exception {
         mockMvc.perform(get(REST_URL + 1)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -64,7 +61,6 @@ public class AdminUserRestControllerTest extends AbstractControllerTest {
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL + USER_ID)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andDo(print())
                 .andExpect(status().isNoContent());
         assertMatch(userService.getAll(), ADMIN, USER1, USER2, USER3);
     }
@@ -73,8 +69,7 @@ public class AdminUserRestControllerTest extends AbstractControllerTest {
     public void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL + 1)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -94,7 +89,7 @@ public class AdminUserRestControllerTest extends AbstractControllerTest {
     public void testUpdate() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
-        updated.setRoles(EnumSet.copyOf(Collections.singletonList(Role.ROLE_ADMIN)));
+        updated.setRoles(EnumSet.copyOf(Collections.singletonList(Role.ROLE_USER)));
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
@@ -170,7 +165,7 @@ public class AdminUserRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testCreateDuplicate() throws Exception {
-        User expected = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER, Role.ROLE_ADMIN);
+        User expected = new User(null, "New", "user@yandex.ru", "newPass", Role.ROLE_USER);
         mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))

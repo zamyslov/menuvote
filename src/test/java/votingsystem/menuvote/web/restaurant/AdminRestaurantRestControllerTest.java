@@ -35,7 +35,6 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL + RES1_ID)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andDo(print())
                 .andExpect(status().isNoContent());
         assertMatch(restaurantService.getAll(), Collections.singletonList(RES2));
     }
@@ -44,8 +43,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     public void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL + 1)
                 .with(userHttpBasic(ADMIN_AUTH)))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -92,11 +90,11 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGetAll() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL)
+        mockMvc.perform(get(REST_URL)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJsonArray(RES1, RES2)));
+                .andExpect(contentJsonArray(RES1, RES2));
     }
 
     @Test
@@ -106,8 +104,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(expected)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -118,8 +115,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -131,8 +127,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isConflict())
-                .andDo(print());
+                .andExpect(status().isConflict());
     }
 
     @Test
