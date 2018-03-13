@@ -7,13 +7,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import votingsystem.menuvote.model.User;
-import votingsystem.menuvote.web.AuthorizedUser;
-import votingsystem.menuvote.web.json.JsonUtil;
+import votingsystem.menuvote.controller.AuthorizedUser;
+import votingsystem.menuvote.util.json.JsonUtil;
 
 import java.io.UnsupportedEncodingException;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static votingsystem.menuvote.web.json.JsonUtil.writeValue;
+import static votingsystem.menuvote.util.json.JsonUtil.writeValue;
 
 public class TestUtil {
 

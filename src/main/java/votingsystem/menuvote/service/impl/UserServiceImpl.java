@@ -12,7 +12,7 @@ import votingsystem.menuvote.model.User;
 import votingsystem.menuvote.repository.UserRepository;
 import votingsystem.menuvote.service.UserService;
 import votingsystem.menuvote.util.exception.NotFoundException;
-import votingsystem.menuvote.web.AuthorizedUser;
+import votingsystem.menuvote.controller.AuthorizedUser;
 
 import java.util.List;
 
