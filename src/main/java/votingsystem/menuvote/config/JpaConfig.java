@@ -70,7 +70,6 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
         config.setJdbcUrl(url);
         config.setUsername(username);
         config.setPassword(password);
-
         return new HikariDataSource(config);
     }
 
@@ -85,12 +84,10 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
         jpaPropertyMap.put("hibernate.cache.use_second_level_cache", "true");
         jpaPropertyMap.put("hibernate.cache.use_query_cache", "true");
         entityManagerFactoryBean.setJpaPropertyMap(jpaPropertyMap);
-
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
         jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
-
         return entityManagerFactoryBean;
     }
 
@@ -124,23 +121,17 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
     public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(this.jacksonBuilder().build());
-
         return converter;
     }
 
     public Jackson2ObjectMapperBuilder jacksonBuilder() {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-
         Hibernate5Module hibernateModule = new Hibernate5Module();
-
         hibernateModule.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, false);
-
         builder.modules(hibernateModule);
-
         // Spring MVC default Objectmapper configuration
         builder.featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         builder.featuresToDisable(MapperFeature.DEFAULT_VIEW_INCLUSION);
-
         return builder;
     }
 
@@ -167,19 +158,5 @@ public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionMan
             }
         }
         super.extendMessageConverters(converters);
-    }
-
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.favorPathExtension(true).
-                favorParameter(false).
-                parameterName("mediaType").
-//                ignoreAcceptHeader(true).
-        useJaf(false).
-                defaultContentType(MediaType.APPLICATION_JSON).
-                mediaType("xml", MediaType.APPLICATION_XML).
-                mediaType("text/plain", MediaType.TEXT_PLAIN).
-                mediaType("text/html", MediaType.TEXT_HTML).
-                mediaType("json", MediaType.APPLICATION_JSON);
     }
 }
