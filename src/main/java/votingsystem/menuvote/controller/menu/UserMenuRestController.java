@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import votingsystem.menuvote.model.Menu;
 import votingsystem.menuvote.service.MenuService;
-import votingsystem.menuvote.util.DateTimeUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +18,8 @@ import java.util.List;
 public class UserMenuRestController {
     static final String REST_URL = "/rest/menu";
     private final Logger log = LoggerFactory.getLogger(getClass());
+    public static final LocalDate MIN_DATE = LocalDate.of(1, 1, 1);
+    public static final LocalDate MAX_DATE = LocalDate.of(3000, 1, 1);
 
     @Autowired
     private MenuService service;
@@ -33,8 +34,8 @@ public class UserMenuRestController {
     public List<Menu> getBetween(
             @RequestParam(value = "startDate", required = false) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) LocalDate endDate) {
-        LocalDate start = startDate != null ? startDate : DateTimeUtil.MIN_DATE;
-        LocalDate end = endDate != null ? endDate : DateTimeUtil.MAX_DATE;
+        LocalDate start = startDate != null ? startDate : MIN_DATE;
+        LocalDate end = endDate != null ? endDate : MAX_DATE;
         log.info("get between {} and {}", start.toString(), end.toString());
         return service.getBetween(start, end);
     }

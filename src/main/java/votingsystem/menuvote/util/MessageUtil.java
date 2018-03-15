@@ -2,7 +2,6 @@ package votingsystem.menuvote.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import votingsystem.menuvote.util.exception.ApplicationException;
@@ -19,7 +18,7 @@ public class MessageUtil {
         this.messageSource = messageSource;
     }
 
-    public String getMessage(String code, Locale locale, String... args) {
+    private String getMessage(String code, Locale locale, String... args) {
         return messageSource.getMessage(code, args, locale);
     }
 
@@ -31,7 +30,4 @@ public class MessageUtil {
         return getMessage(appEx.getMsgCode(), appEx.getArgs());
     }
 
-    public String getMessage(MessageSourceResolvable resolvable) {
-        return messageSource.getMessage(resolvable, LocaleContextHolder.getLocale());
-    }
 }
