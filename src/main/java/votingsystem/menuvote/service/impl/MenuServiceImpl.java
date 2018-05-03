@@ -29,14 +29,12 @@ public class MenuServiceImpl implements MenuService {
         this.dishRepository = dishRepository;
     }
 
-    @CacheEvict(value = "menus", allEntries = true)
     @Override
     public Menu create(Menu menu) {
         Assert.notNull(menu, "menu must not be null");
         return menuRepository.save(menu);
     }
 
-    @CacheEvict(value = "menus", allEntries = true)
     @Override
     public void delete(int id) throws NotFoundException {
         checkNotFoundWithId(menuRepository.delete(id), id);
@@ -47,7 +45,6 @@ public class MenuServiceImpl implements MenuService {
         return checkNotFoundWithId(menuRepository.get(id), id);
     }
 
-    @CacheEvict(value = "menus", allEntries = true)
     @Override
     public void update(Menu menu) {
         Assert.notNull(menu, "menu must not be null");

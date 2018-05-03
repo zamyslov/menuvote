@@ -34,7 +34,6 @@ public class ProfileUserRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER_AUTH)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andDo(print());
                 .andExpect(contentJson(USER));
     }
 

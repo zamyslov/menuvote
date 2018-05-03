@@ -77,6 +77,7 @@ abstract public class AbstractControllerTest {
     public void setUp() {
         cacheManager.getCache("users").clear();
         cacheManager.getCache("dishes").clear();
+        cacheManager.getCache("restaurants").clear();
     }
 
     protected String getMessage(String code) {

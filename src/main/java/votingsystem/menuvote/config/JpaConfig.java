@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.MessageSource;
@@ -40,6 +41,7 @@ import static votingsystem.menuvote.util.json.JacksonObjectMapper.getMapper;
 @ComponentScan(basePackages = {"votingsystem.menuvote"})
 @EnableTransactionManagement
 @EnableWebMvc
+@EnableCaching
 @EnableJpaRepositories(basePackageClasses = MenuVoteApplication.class, entityManagerFactoryRef = "configureEntityManagerFactory")
 public class JpaConfig extends WebMvcConfigurerAdapter implements TransactionManagementConfigurer {
 

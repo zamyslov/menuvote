@@ -1,7 +1,9 @@
 package votingsystem.menuvote.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import votingsystem.menuvote.model.Restaurant;
 import votingsystem.menuvote.util.exception.NotFoundException;
@@ -14,7 +16,15 @@ import static votingsystem.menuvote.testdata.RestaurantTestData.*;
 public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
     protected RestaurantService service;
+
+    @Before
+    public void setUpCacheUsers() {
+        cacheManager.getCache("restaurants").clear();
+    }
 
     @Test
     public void create() {
